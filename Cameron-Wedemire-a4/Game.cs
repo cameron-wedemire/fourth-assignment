@@ -12,14 +12,13 @@ namespace MohawkGame2D
     {
         //variables
         backgroundStar[] backgroundStars = new backgroundStar[50]; //array of background stars
+        Player character = new Player(); //the player character
 
         //munitions, friend and foe in same group but each has its own this.friend number (add later)
         //Bullets[] Bullet = new Bullet[5];//array of bullets
         //Missiles[] Missile = new Missile[5];//array of bullets
 
         int levelNumber;
-        Vector2 tempPLayerSpeed = new Vector2(0, 0); // will be deleted once line below is implimented in player class
-        //Vector2 playerSpeed = new Vector2(0, 0); // this will be put in the player class later
 
         /// <summary>
         ///     Setup runs once before the game loop begins.
@@ -57,8 +56,7 @@ namespace MohawkGame2D
             }
 
             //character.Setup();
-            tempPLayerSpeed.X = 0; // will be deleted once line below is implimented in player class
-            tempPLayerSpeed.Y = 0;
+            character.Setup();
 
             levelNumber = 1;
         }
@@ -74,13 +72,11 @@ namespace MohawkGame2D
             for (int i = 0; i < backgroundStars.Length; i++)
             {
                 //call the background update function for each star in the array
-
-                tempPLayerSpeed.X += Random.Integer(-1, 2); // will be deleted once line below is implimented in player class
-                tempPLayerSpeed.Y += Random.Integer(-1, 2);
-
-                backgroundStars[i].Update(tempPLayerSpeed.X, tempPLayerSpeed.Y); //the numbers are temp for speed testing and will be using the player.speed later
+                backgroundStars[i].Update(character.playerSpeedX, character.playerSpeedY); //the numbers are temp for speed testing and will be using the player.speed later
             }
-
+            
+            //character stuff move later maybe
+            character.Update();
         }
         public void movementCalls()
         {

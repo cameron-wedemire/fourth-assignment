@@ -19,7 +19,7 @@ public class backgroundStar
         starSize = Random.Float(2, 7);
     }
 
-    public void Update(float speedX, float speedY) //the numbers are temp for speed testing and will be using the player.speed later
+    public void Update(float speedX , float speedY) //the numbers are the player speed called in from game.cs
     {
         //finds new value when size=0
         if (starSize > 0)
