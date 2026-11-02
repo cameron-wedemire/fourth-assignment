@@ -11,7 +11,7 @@ namespace MohawkGame2D
     public class Game
     {
         //variables
-        backgroundStar[] backgroundStars = new backgroundStar[50]; //array of background stars
+        backgroundDust[] dustParticle = new backgroundDust[50]; //array of background dust particles
         Player character = new Player(); //the player character
 
         //munitions, friend and foe in same group but each has its own this.friend number (add later)
@@ -46,13 +46,13 @@ namespace MohawkGame2D
             //    Missiles[i].Setup();
             //}
 
-            //itterate over array, to setup each star
-            for (int i = 0; i < backgroundStars.Length; i++)
+            //itterate over array, to setup each dust particle
+            for (int i = 0; i < dustParticle.Length; i++)
             {
-                //for each element in arrey, create new star
-                backgroundStars[i] = new backgroundStar();
-                //setup the star that was just made
-                backgroundStars[i].Setup();
+                //for each element in arrey, create new dust particle
+                dustParticle[i] = new backgroundDust();
+                //setup the dust particle that was just made
+                dustParticle[i].Setup();
             }
 
             //character.Setup();
@@ -69,10 +69,10 @@ namespace MohawkGame2D
             Window.ClearBackground(25, 25, 25);
 
             //draw the background
-            for (int i = 0; i < backgroundStars.Length; i++)
+            for (int i = 0; i < dustParticle.Length; i++)
             {
-                //call the background update function for each star in the array
-                backgroundStars[i].Update(character.playerSpeedX, character.playerSpeedY); //the numbers are temp for speed testing and will be using the player.speed later
+                //call the background update function for each dust particle in the array
+                dustParticle[i].Update(character.playerSpeedX, character.playerSpeedY);
             }
             
             //character stuff move later maybe
