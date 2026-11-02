@@ -28,7 +28,6 @@ public class backgroundDust
         {
             //calculate distance to player
             this.distanceToPlayer = Math.Abs(300 - position.X) + Math.Abs(300 - position.Y);
-            //Console.WriteLine(this.distanceToPlayer);
 
             dustSize -= 0.1f;
             //to give impression of player moving the stars in the background will move with the oposite of the player speed.. maybe make those closer to the player move faster than further out ones?
