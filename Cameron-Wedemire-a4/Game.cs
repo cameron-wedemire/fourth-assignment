@@ -72,7 +72,7 @@ namespace MohawkGame2D
             for (int i = 0; i < dustParticle.Length; i++)
             {
                 //call the background update function for each dust particle in the array
-                dustParticle[i].Update(character.playerSpeedX, character.playerSpeedY);
+                dustParticle[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
             }
             
             //character stuff move later maybe
