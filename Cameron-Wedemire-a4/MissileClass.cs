@@ -14,12 +14,15 @@ public class Missile
     public float distanceToPlayer;
     public float missileRotation;
     public Vector2 missileSpeed;
+    Vector2 RotToPlayer;
+    Vector2 playerLocationFlase = new Vector2 (300,300);
+
 
     public void Setup(float spawnLocationX, float spawnLocationY, float spawnRotation) //the numbers are the location of the thing that spawned them in
     {
         this.position.X = spawnLocationX;
         this.position.Y = spawnLocationY;
-        this.fuel = 20;
+        this.fuel = 50;
         distanceToPlayer = (300 - this.position.X) + (300 - this.position.Y);
         this.missileRotation = spawnRotation + 90; //for some reason it needs a +90 to fly forwards instead of sideways
         missileSpeed = new Vector2(0,0);
@@ -35,9 +38,26 @@ public class Missile
 
             fuel -= 0.1f;
 
-            //if fuel is above 0 allow thrust to increase
+            //if fuel is above 0 allow thrust to increase and missile rotation to change
             if (fuel > 0)
             {
+                //calculate missile rotation change based on angle to player
+                RotToPlayer = Vector2.Normalize(playerLocationFlase - this.position);
+
+                //temp instead of gradual rot change
+                //missileRotation = RotToPlayer.X * 90;
+
+                //missile rotation change based on if RotToPlayer is positive or negative
+                if ((RotToPlayer.X + missileRotation) < 0)
+                {
+                    missileRotation -= 5;
+                }
+                else if ((RotToPlayer.X + missileRotation) > 0)
+                {
+                    missileRotation += 5;
+                }
+
+                Console.WriteLine(missileRotation);
                 //calculate missile X speed based on rotation of the missile
                 this.missileSpeed.X += MathF.Cos(this.missileRotation * (MathF.PI / 180)) * 0.5f;
                 //calculate missile Y speed based on rotation of the missile
