@@ -14,16 +14,16 @@ public class Missile
     public float distanceToPlayer;
     public float missileRotation;
     public Vector2 missileSpeed;
-    Vector2 RotToPlayer;
-    Vector2 playerLocationFlase = new Vector2 (300,300);
-
+    //Vector2 RotToPlayer;
+    float RotToPlayer;
+    Vector2 playerLocationFalse = new Vector2(300, 300); //just for calculations that need Vector2s
 
     public void Setup(float spawnLocationX, float spawnLocationY, float spawnRotation) //the numbers are the location of the thing that spawned them in
     {
         this.position.X = spawnLocationX;
         this.position.Y = spawnLocationY;
         this.fuel = 50;
-        distanceToPlayer = (300 - this.position.X) + (300 - this.position.Y);
+        this.distanceToPlayer = (300 - this.position.X) + (300 - this.position.Y);
         this.missileRotation = spawnRotation + 90; //for some reason it needs a +90 to fly forwards instead of sideways
         missileSpeed = new Vector2(0,0);
     }
@@ -34,7 +34,7 @@ public class Missile
         if (fuel > -20)
         {
             //calculate distance to player
-            this.distanceToPlayer = Math.Abs(300 - position.X) + Math.Abs(300 - position.Y);
+            this.distanceToPlayer = Math.Abs(playerLocationFalse.X - this.position.X) + Math.Abs(playerLocationFalse.Y - this.position.Y);
 
             fuel -= 0.1f;
 
@@ -42,22 +42,27 @@ public class Missile
             if (fuel > 0)
             {
                 //calculate missile rotation change based on angle to player
-                RotToPlayer = Vector2.Normalize(playerLocationFlase - this.position);
+                //RotToPlayer = Vector2.Normalize(playerLocationFalse - this.position);
+                RotToPlayer = MathF.Atan((this.position.Y - playerLocationFalse.Y) / (this.position.X - playerLocationFalse.X)); //y2 - y1 / x2 - x1
 
                 //temp instead of gradual rot change
                 //missileRotation = RotToPlayer.X * 90;
 
                 //missile rotation change based on if RotToPlayer is positive or negative
-                if ((RotToPlayer.X + missileRotation) < 0)
+                if ((RotToPlayer + missileRotation) < 0)
                 {
                     missileRotation -= 5;
                 }
-                else if ((RotToPlayer.X + missileRotation) > 0)
+                else if ((RotToPlayer + missileRotation) > 0)
                 {
                     missileRotation += 5;
                 }
+                if (Math.Abs(missileRotation) > 360)
+                {
+                    missileRotation = 0;
+                }
 
-                Console.WriteLine(missileRotation);
+                Console.WriteLine(RotToPlayer - missileRotation);
                 //calculate missile X speed based on rotation of the missile
                 this.missileSpeed.X += MathF.Cos(this.missileRotation * (MathF.PI / 180)) * 0.5f;
                 //calculate missile Y speed based on rotation of the missile
