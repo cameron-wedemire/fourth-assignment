@@ -86,7 +86,7 @@ public class Player
         }
 
         //move forward based on ship angle
-        if (Input.IsKeyboardKeyDown(KeyboardKey.Space))
+        if (Input.IsKeyboardKeyDown(KeyboardKey.W))
         {
             //calculate player X speed based on rotation of the ship
             this.playerSpeed.X += MathF.Cos(this.playerRotation * (MathF.PI / 180)) * 5;
@@ -136,7 +136,6 @@ public class Player
             {
                 this.playerSpeed = new Vector2(-15, this.playerSpeed.Y);
             }
-            Console.WriteLine("oi");
         }
         if (Math.Abs(this.playerSpeed.Y) > 15)
         {
