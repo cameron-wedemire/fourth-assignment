@@ -86,22 +86,44 @@ public class Player
         //move forward based on ship angle
         if (Input.IsKeyboardKeyDown(KeyboardKey.Space))
         {
-            this.playerSpeedX += (float)Math.Cos(Math.PI * this.playerRotation / 180) * 5;
-            this.playerSpeedY += (float)Math.Sin(Math.PI * this.playerRotation / 180) * 5;
+            //calculate player X speed based on rotation of the ship
+            this.playerSpeedX += MathF.Cos(this.playerRotation * (MathF.PI / 180)) * 5;
+
+            //calculate player Y speed based on rotation of the ship
+            this.playerSpeedY += MathF.Sin(this.playerRotation * (MathF.PI / 180)) * 5;
         }
-        //cap speed in all dirs //fix later
-        if (this.playerSpeedY > -15)
+
+        //cap player speed.. this isnt right...
+        //X speed
+        if (this.playerSpeedX > 15)
         {
-
+            this.playerSpeedX = 15;
+        }
+        else if (this.playerSpeedX < -15)
+        {
+            this.playerSpeedX = -15;
         }
 
-        Console.WriteLine(this.playerRotation);
+        //Y speed
+        if (this.playerSpeedY > 15)
+        {
+            this.playerSpeedY = 15;
+        }
+        else if (this.playerSpeedY < -15)
+        {
+            this.playerSpeedY = -15;
+        }
+
+        //Console.WriteLine("{0}, {1}, {2}", this.playerRotation, this.playerSpeedX, this.playerSpeedY);
         //calculate playerSpeed impact by thrust based on ship angle
 
         //draws the star //find how to rotate later, this is temp player
         Draw.SetLineColor(255, 50, 50);
         Draw.SetFillColor(50, 50, 50);
         Draw.Rectangle(296, 290, 14, 20);
+
+        //draw temp player rotation visualizer
+        //Draw.Circle(300 + this.playerSpeedX, 300 + this.playerSpeedY, 10); //failed
     }
 
 }
