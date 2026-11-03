@@ -16,7 +16,7 @@ namespace MohawkGame2D
 
         //munitions, friend and foe in same group but each has its own this.friend number (add later)
         //Bullets[] Bullet = new Bullet[5];//array of bullets
-        //Missiles[] Missile = new Missile[5];//array of bullets
+        Missile[] Missile = new Missile[5];//array of missiles
 
         int levelNumber;
 
@@ -37,14 +37,14 @@ namespace MohawkGame2D
             //    Bullets[i].Setup();
             //}
 
-            ////iterate over array, to setup each missile
-            //for (int i = 0; i < Missiles.Length; i++)
-            //{
-            //    //for each element in arrey, create new Missile
-            //    Missiles[i] = new Missile();
-            //    //setup the munition that was just made
-            //    Missiles[i].Setup();
-            //}
+            //iterate over array, to setup each missile
+            for (int i = 0; i < Missile.Length; i++)
+            {
+                //for each element in arrey, create new Missile
+                Missile[i] = new Missile();
+                //setup the munition that was just made
+                Missile[i].Setup(50, 50, 0); //replace the numbers with the location of the thing that spawned them in later
+            }
 
             //itterate over array, to setup each dust particle
             for (int i = 0; i < dustParticle.Length; i++)
@@ -74,7 +74,14 @@ namespace MohawkGame2D
                 //call the background update function for each dust particle in the array
                 dustParticle[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
             }
-            
+
+            //move all the missiles
+            for (int i = 0; i < Missile.Length; i++)
+            {
+                //call the missile update function for each missile in the array
+                Missile[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
+            }
+
             //character stuff move later maybe
             character.Update();
         }
