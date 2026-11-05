@@ -43,26 +43,27 @@ public class Missile
             {
                 //calculate missile rotation change based on angle to player
                 //RotToPlayer = Vector2.Normalize(playerLocationFalse - this.position);
-                RotToPlayer = MathF.Atan((this.position.Y - playerLocationFalse.Y) / (this.position.X - playerLocationFalse.X)); //y2 - y1 / x2 - x1
+                RotToPlayer = MathF.Atan2((this.position.Y - playerLocationFalse.Y), (this.position.X - playerLocationFalse.X)) * 90 - 90; //y2 - y1 / x2 - x1
+                //Console.WriteLine(RotToPlayer);
 
                 //temp instead of gradual rot change
                 //missileRotation = RotToPlayer.X * 90;
 
                 //missile rotation change based on if RotToPlayer is positive or negative
-                if ((RotToPlayer + missileRotation) < 0)
-                {
-                    missileRotation -= 5;
-                }
-                else if ((RotToPlayer + missileRotation) > 0)
+                if ((RotToPlayer - missileRotation) < 0)
                 {
                     missileRotation += 5;
+                }
+                else if ((RotToPlayer - missileRotation) > 0)
+                {
+                    missileRotation -= 5;
                 }
                 if (Math.Abs(missileRotation) > 360)
                 {
                     missileRotation = 0;
                 }
 
-                //Console.WriteLine(RotToPlayer - missileRotation);
+                Console.WriteLine("{0}, {1}", RotToPlayer, missileRotation);
                 //calculate missile X speed based on rotation of the missile
                 this.missileSpeed.X += MathF.Cos(this.missileRotation * (MathF.PI / 180)) * 0.5f;
                 //calculate missile Y speed based on rotation of the missile
