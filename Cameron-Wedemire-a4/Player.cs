@@ -123,9 +123,11 @@ public class Player
         {
             Vector2 playerMoveAngle = Vector2.Normalize(playerSpeed);
             //Console.WriteLine(playerMoveAngle);
-            if (Math.Abs(this.playerSpeed.X) + Math.Abs(this.playerSpeed.Y) > 15)
+            //if (Math.Abs(this.playerSpeed.X) + Math.Abs(this.playerSpeed.Y) > 40)
+            if (this.playerSpeed.Length() > 15)
             {
-                
+                this.playerSpeed = playerMoveAngle * this.playerMaxSpeed;
+                Console.WriteLine(this.playerSpeed);
             }
         }
     }
