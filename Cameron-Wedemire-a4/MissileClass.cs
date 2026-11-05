@@ -101,29 +101,3 @@ public class Missile
 ////get the direction to the mouse from the eyes position
 //Vector2 direction = Vector2.Normalize(eyeToMouse);
 //float distance = eyeToMouse.Length(); //or vector2.distance(position, Input.GetMousePosition());
-
-///change ship angle (scrapped and used for missile movement)
-////rotate player left
-//if (Input.IsKeyboardKeyDown(KeyboardKey.A))
-//{
-//   this.playerRotation -= 5;
-//}
-////rotate player right
-//if (Input.IsKeyboardKeyDown(KeyboardKey.D))
-//{
-//    this.playerRotation += 5;
-//}
-//if (Math.Abs(this.playerRotation) > 360)
-//{
-//    //reset roation to 0 if either direction is above 360 degrees,
-//    this.playerRotation = 0;
-//}
-
-////move forward based on ship angle
-//if (Input.IsKeyboardKeyDown(KeyboardKey.W))
-//{
-//    //calculate player X speed based on rotation of the ship
-//    this.playerSpeed.X += MathF.Cos(this.playerRotation* (MathF.PI / 180)) * 5;
-
-//    //calculate player Y speed based on rotation of the ship
-//    this.playerSpeed.Y += MathF.Sin(this.playerRotation * (MathF.PI / 180)) * 5;

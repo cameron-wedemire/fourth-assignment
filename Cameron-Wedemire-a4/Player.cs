@@ -11,10 +11,7 @@ public class Player
 {
     // Variables local to this class
     //might need a variable later to state player xy distance from origin so its easier to calculate enemy stuff but that will be a later issue
-    //public float playerSpeedX;
-    //public float playerSpeedY;
     public Vector2 playerSpeed;
-    //public Vector2 PlayerSpeedRatio; //do normalization
     //public float playerRotation;
 
     //constants
@@ -22,11 +19,8 @@ public class Player
 
     public void Setup()
     {
-        //this.playerSpeedX = 0;
-        //this.playerSpeedY = 0;
         this.playerSpeed = new Vector2(0,0);
-        //this.PlayerSpeedRatio = new Vector2(0.5f, 0.5f);
-        //this.playerRotation = -90; //im not sure how i did it but i managed to get the player rotation to work but it needs 90 degree offset
+        //this.playerRotation = -90;
     }
 
     public void Update()
@@ -71,66 +65,3 @@ public class Player
         }
     }
 }
-
-
-//failed code:
-
-///change ship angle
-////rotate player left
-//if (Input.IsKeyboardKeyDown(KeyboardKey.A))
-//{
-//   this.playerRotation -= 5;
-//}
-////rotate player right
-//if (Input.IsKeyboardKeyDown(KeyboardKey.D))
-//{
-//    this.playerRotation += 5;
-//}
-//if (Math.Abs(this.playerRotation) > 360)
-//{
-//    //reset roation to 0 if either direction is above 360 degrees,
-//    this.playerRotation = 0;
-//}
-
-////move forward based on ship angle
-//if (Input.IsKeyboardKeyDown(KeyboardKey.W))
-//{
-//    //calculate player X speed based on rotation of the ship
-//    this.playerSpeed.X += MathF.Cos(this.playerRotation* (MathF.PI / 180)) * 5;
-
-//    //calculate player Y speed based on rotation of the ship
-//    this.playerSpeed.Y += MathF.Sin(this.playerRotation * (MathF.PI / 180)) * 5;
-
-////cap the speed by doing the inverse, also didnt work
-////if (Math.Abs(this.playerSpeedX) > 15)
-////{
-////    this.playerSpeedX -= MathF.Cos(this.playerRotation * (MathF.PI / 180)) * 5;
-////}
-////if (Math.Abs(this.playerSpeedY) > 15)
-////{
-////    this.playerSpeedY -= MathF.Sin(this.playerRotation * (MathF.PI / 180)) * 5;
-////}
-//}
-
-//if (Math.Abs(this.playerSpeed.X) > 15)
-//{
-//    if (this.playerSpeed.X > 15)
-//    {
-//        this.playerSpeed = new Vector2(15, this.playerSpeed.Y);
-//    }
-//    if (this.playerSpeed.X < -15)
-//    {
-//        this.playerSpeed = new Vector2(-15, this.playerSpeed.Y);
-//    }
-//}
-//if (Math.Abs(this.playerSpeed.Y) > 15)
-//{
-//    if (this.playerSpeed.Y > 15)
-//    {
-//        this.playerSpeed = new Vector2(this.playerSpeed.X, 15);
-//    }
-//    if (this.playerSpeed.Y < -15)
-//    {
-//        this.playerSpeed = new Vector2(this.playerSpeed.X, -15);
-//    }
-//}
