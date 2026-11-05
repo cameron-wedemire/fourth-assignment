@@ -14,78 +14,97 @@ public class Player
     //public float playerSpeedX;
     //public float playerSpeedY;
     public Vector2 playerSpeed;
+    //public Vector2 PlayerSpeedRatio; //do normalization
     //public float playerRotation;
 
     //constants
-    int playerMaxSpeed;
+    int playerMaxSpeed = 15;
 
     public void Setup()
     {
         //this.playerSpeedX = 0;
         //this.playerSpeedY = 0;
         this.playerSpeed = new Vector2(0,0);
+        //this.PlayerSpeedRatio = new Vector2(0.5f, 0.5f);
         //this.playerRotation = -90; //im not sure how i did it but i managed to get the player rotation to work but it needs 90 degree offset
-
-        playerMaxSpeed = 15;
     }
 
     public void Update()
     {
         ////temp player movement, will change to go based on rotation later but that depends on if i get rotation taught to me, if not then ill do it based on mouse location
+        //if (Input.IsKeyboardKeyDown(KeyboardKey.W))
+        //{
+        //    //cap player speed
+        //    if (this.playerSpeed.Y > -playerMaxSpeed)
+        //    {
+        //        this.playerSpeed.Y -= 1;
+        //    }
+        //}
+        //else if (Input.IsKeyboardKeyDown(KeyboardKey.S))
+        //{
+        //    //cap player speed
+        //    if (this.playerSpeed.Y < playerMaxSpeed)
+        //    {
+        //        this.playerSpeed.Y += 1;
+        //    }
+        //}
+
+        //if (Input.IsKeyboardKeyDown(KeyboardKey.A))
+        //{
+        //    //cap player speed
+        //    if (this.playerSpeed.X > -playerMaxSpeed)
+        //    {
+        //        this.playerSpeed.X -= 1;
+        //    }
+        //}
+        //else if (Input.IsKeyboardKeyDown(KeyboardKey.D))
+        //{
+        //    //cap player speed
+        //    if (this.playerSpeed.X < playerMaxSpeed)
+        //    {
+        //        this.playerSpeed.X += 1;
+        //    }
+        //}
+
+        ////cap player speed..this isnt right...
+        ////X speed
+        //if (this.playerSpeed.X > playerMaxSpeed)
+        //{
+        //    this.playerSpeed.X = playerMaxSpeed;
+        //}
+        //else if (this.playerSpeed.X < -playerMaxSpeed)
+        //{
+        //    this.playerSpeed.X = -playerMaxSpeed;
+        //}
+
+        ////Y speed
+        //if (this.playerSpeed.Y > playerMaxSpeed)
+        //{
+        //    this.playerSpeed.Y = playerMaxSpeed;
+        //}
+        //else if (this.playerSpeed.Y < -playerMaxSpeed)
+        //{
+        //    this.playerSpeed.Y = -playerMaxSpeed;
+        //}
+
         if (Input.IsKeyboardKeyDown(KeyboardKey.W))
         {
-            //cap player speed
-            if (this.playerSpeed.Y > -playerMaxSpeed)
-            {
-                this.playerSpeed.Y -= 1;
-            }
+            this.playerSpeed.Y -= 1;
         }
         else if (Input.IsKeyboardKeyDown(KeyboardKey.S))
         {
-            //cap player speed
-            if (this.playerSpeed.Y < playerMaxSpeed)
-            {
-                this.playerSpeed.Y += 1;
-            }
+            this.playerSpeed.Y += 1;
         }
 
         if (Input.IsKeyboardKeyDown(KeyboardKey.A))
         {
-            //cap player speed
-            if (this.playerSpeed.X > -playerMaxSpeed)
-            {
-                this.playerSpeed.X -= 1;
-            }
+            this.playerSpeed.X -= 1;
         }
         else if (Input.IsKeyboardKeyDown(KeyboardKey.D))
         {
-            //cap player speed
-            if (this.playerSpeed.X < playerMaxSpeed)
-            {
-                this.playerSpeed.X += 1;
-            }
+            this.playerSpeed.X += 1;
         }
-
-        //cap player speed..this isnt right...
-        //X speed
-        if (this.playerSpeed.X > playerMaxSpeed)
-        {
-            this.playerSpeed.X = playerMaxSpeed;
-        }
-        else if (this.playerSpeed.X < -playerMaxSpeed)
-        {
-            this.playerSpeed.X = -playerMaxSpeed;
-        }
-
-        //Y speed
-        if (this.playerSpeed.Y > playerMaxSpeed)
-        {
-            this.playerSpeed.Y = playerMaxSpeed;
-        }
-        else if (this.playerSpeed.Y < -playerMaxSpeed)
-        {
-            this.playerSpeed.Y = -playerMaxSpeed;
-        }
+        CapPlayerSpeed();
 
         //Console.WriteLine("{0}, {1}", this.playerRotation, this.playerSpeed);
         //calculate playerSpeed impact by thrust based on ship angle
@@ -98,7 +117,18 @@ public class Player
         //draw temp player rotation visualizer
         //Draw.Circle(300 + this.playerSpeedX, 300 + this.playerSpeedY, 10); //failed
     }
-
+    public void CapPlayerSpeed() //PlayerSpeedRatio
+    {
+        if (playerSpeed.X != 0 || playerSpeed.Y != 0)
+        {
+            Vector2 playerMoveAngle = Vector2.Normalize(playerSpeed);
+            //Console.WriteLine(playerMoveAngle);
+            if (Math.Abs(this.playerSpeed.X) + Math.Abs(this.playerSpeed.Y) > 15)
+            {
+                
+            }
+        }
+    }
 }
 
 

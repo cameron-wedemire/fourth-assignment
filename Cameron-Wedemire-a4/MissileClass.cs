@@ -62,7 +62,7 @@ public class Missile
                     missileRotation = 0;
                 }
 
-                Console.WriteLine(RotToPlayer - missileRotation);
+                //Console.WriteLine(RotToPlayer - missileRotation);
                 //calculate missile X speed based on rotation of the missile
                 this.missileSpeed.X += MathF.Cos(this.missileRotation * (MathF.PI / 180)) * 0.5f;
                 //calculate missile Y speed based on rotation of the missile
