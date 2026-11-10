@@ -15,7 +15,7 @@ namespace MohawkGame2D
         Player character = new Player(); //the player character
 
         //munitions, friend and foe in same group but each has its own this.friend number (add later)
-        //Bullets[] Bullet = new Bullet[5];//array of bullets
+        Bullet[] Bullet = new Bullet[5];//array of bullets
         Missile[] Missile = new Missile[5];//array of missiles
 
         int levelNumber;
@@ -31,14 +31,14 @@ namespace MohawkGame2D
             string cwd = System.IO.Directory.GetCurrentDirectory(); //cwd = current working directory
             Console.WriteLine($"CWD:{cwd}");
 
-            ////iterate over array, to setup each bullet
-            //for (int i = 0; i < Bullets.Length; i++)
-            //{
-            //    //for each element in arrey, create new Bullet
-            //    Bullets[i] = new Bullet();
-            //    //setup the munition that was just made
-            //    Bullets[i].Setup();
-            //}
+            //iterate over array, to setup each bullet
+            for (int i = 0; i < Bullet.Length; i++)
+            {
+                //for each element in arrey, create new Bullet
+                Bullet[i] = new Bullet();
+                //setup the munition that was just made
+                Bullet[i].Setup(50, 50, new Vector2(400, 50), 5); //replace the first 3 numbers with the location of the thing that spawned them in later
+            }
 
             //iterate over array, to setup each missile
             for (int i = 0; i < Missile.Length; i++)
@@ -76,6 +76,13 @@ namespace MohawkGame2D
             {
                 //call the background update function for each dust particle in the array
                 dustParticle[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
+            }
+
+            //move all the bullets
+            for (int i = 0; i < Bullet.Length; i++)
+            {
+                //call the missile update function for each missile in the array
+                Bullet[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
             }
 
             //move all the missiles
