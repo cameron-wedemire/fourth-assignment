@@ -43,31 +43,36 @@ public class Missile
             {
                 //calculate missile rotation change based on angle to player
                 //RotToPlayer = Vector2.Normalize(playerLocationFalse - this.position);
-                RotToPlayer = MathF.Atan2((this.position.Y - playerLocationFalse.Y), (this.position.X - playerLocationFalse.X)) * 90 - 90; //y2 - y1 / x2 - x1
+                //RotToPlayer = MathF.Atan2((this.position.Y - playerLocationFalse.Y), (this.position.X - playerLocationFalse.X)) * 90 - 90; //y2 - y1 / x2 - x1 //worked but wasnt leading to the player so testing others
+                //RotToPlayer = (float)Math //going to try normalization or something
+
                 //Console.WriteLine(RotToPlayer);
 
                 //temp instead of gradual rot change
                 //missileRotation = RotToPlayer.X * 90;
 
                 //missile rotation change based on if RotToPlayer is positive or negative
-                if ((RotToPlayer - missileRotation) < 0)
-                {
-                    missileRotation += 5;
-                }
-                else if ((RotToPlayer - missileRotation) > 0)
+                if ((missileRotation - RotToPlayer) < 0) //its not propperly checking the rot requirment
                 {
                     missileRotation -= 5;
+                    //Console.WriteLine("rot1");
+                }
+                if ((missileRotation - RotToPlayer) > 0)
+                {
+                    missileRotation += 5;
+                    //Console.WriteLine("rot2");
                 }
                 if (Math.Abs(missileRotation) > 360)
                 {
                     missileRotation = 0;
                 }
 
-                Console.WriteLine("{0}, {1}", RotToPlayer, missileRotation);
+                //Console.WriteLine("{0}, {1}", RotToPlayer, missileRotation);
+                Console.WriteLine(missileRotation - RotToPlayer);
                 //calculate missile X speed based on rotation of the missile
-                this.missileSpeed.X += MathF.Cos(this.missileRotation * (MathF.PI / 180)) * 0.5f;
+                this.missileSpeed.X += MathF.Cos(this.missileRotation * (MathF.PI / 180)) * 0.1f; //should be 0.5f
                 //calculate missile Y speed based on rotation of the missile
-                this.missileSpeed.Y += MathF.Sin(this.missileRotation * (MathF.PI / 180)) * 0.5f;
+                this.missileSpeed.Y += MathF.Sin(this.missileRotation * (MathF.PI / 180)) * 0.1f; //should be 0.5f
             }
 
             //to give impression of player moving the stars in the background will move with the oposite of the player speed.. maybe make those closer to the player move faster than further out ones?

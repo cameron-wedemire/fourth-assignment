@@ -28,6 +28,9 @@ namespace MohawkGame2D
             Window.SetTitle("space fight");
             Window.SetSize(600, 600);//change later if needed
 
+            string cwd = System.IO.Directory.GetCurrentDirectory(); //cwd = current working directory
+            Console.WriteLine($"CWD:{cwd}");
+
             ////iterate over array, to setup each bullet
             //for (int i = 0; i < Bullets.Length; i++)
             //{
