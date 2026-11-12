@@ -17,14 +17,16 @@ public class Bullet
     public Vector2 bulletSpeed;
     float bulletLifeTime;
 
-    public void Setup(float spawnLocationX, float spawnLocationY, Vector2 targetDirection, int spawnSpeed)
+    public void Setup(float spawnLocationX, float spawnLocationY, Vector2 targetDirection, float spawnSpeed)
     {
         this.position.X = spawnLocationX;
         this.position.Y = spawnLocationY;
         this.bulletRotation = 0;
-        this.bulletSpeed = Vector2.Normalize((new Vector2 (spawnLocationX + spawnLocationY) - targetDirection)) * spawnSpeed;
+        this.bulletSpeed = Vector2.Normalize((new Vector2 (spawnLocationX + spawnLocationY) * targetDirection)) * spawnSpeed;
         this.bulletLifeTime = 50;
         Console.WriteLine(this.bulletSpeed);
+        Console.WriteLine("");
+        Console.WriteLine(targetDirection);
     }
 
     public void Update(float speedX, float speedY)
@@ -34,7 +36,13 @@ public class Bullet
         this.position.X -= speedX + this.bulletSpeed.X;
         this.position.Y -= speedY + this.bulletSpeed.Y;
 
-        if (this.bulletLifeTime)
+        bulletLifeTime -= 0.2f;
+        if (this.bulletLifeTime <= 0)
+        {
+            this.position = new Vector2(-50, -50);
+            this.bulletSpeed = new Vector2(0, 0);
+        }
+
 
         //bullet draw //need to fix diagonal movement
         Graphics.Scale = 2;

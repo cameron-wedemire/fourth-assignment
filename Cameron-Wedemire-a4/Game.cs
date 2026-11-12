@@ -37,7 +37,7 @@ namespace MohawkGame2D
                 //for each element in arrey, create new Bullet
                 Bullet[i] = new Bullet();
                 //setup the munition that was just made
-                Bullet[i].Setup(50, 50, new Vector2(300, 300), 5); //replace the first 3 numbers with the location of the thing that spawned them in later
+                Bullet[i].Setup(-50, -50, new Vector2(0, 0), 0); //replace the first 3 numbers with the location of the thing that spawned them in later
             }
 
             //iterate over array, to setup each missile
@@ -81,8 +81,11 @@ namespace MohawkGame2D
             //move all the bullets
             for (int i = 0; i < Bullet.Length; i++)
             {
-                //call the bullet update function for each bullet in the array
-                Bullet[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
+                if (Bullet[i].position != new Vector2(-50, -50))
+                {
+                    //call the bullet update function for each bullet in the array
+                    Bullet[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
+                }
             }
 
             //move all the missiles
@@ -96,13 +99,15 @@ namespace MohawkGame2D
             character.Update();
 
             //spawn player bullets
-            if (Input.IsKeyboardKeyDown(KeyboardKey.Space))
+            if (Input.IsKeyboardKeyPressed(KeyboardKey.Space))
             {
-                foreach (Bullet daBullet in Bullet)
+                //move all the bullets
+                for (int i = 0; i < Bullet.Length; i++)
                 {
-                    if (daBullet.position != new Vector2(-50, -50))
+                    if (Bullet[i].position == new Vector2(-50, -50))
                     {
-
+                        Bullet[i].Setup(300, 300, new Vector2(MathF.Cos((character.playerTurretRotation + 90) * (MathF.PI / 180)), MathF.Sin((character.playerTurretRotation + 90) * (MathF.PI / 180))),5);
+                        i = Bullet.Length;
                     }
                 }
             }
