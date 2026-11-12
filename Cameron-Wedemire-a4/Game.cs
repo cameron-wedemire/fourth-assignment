@@ -37,7 +37,7 @@ namespace MohawkGame2D
                 //for each element in arrey, create new Bullet
                 Bullet[i] = new Bullet();
                 //setup the munition that was just made
-                Bullet[i].Setup(50, 50, new Vector2(400, 50), 5); //replace the first 3 numbers with the location of the thing that spawned them in later
+                Bullet[i].Setup(50, 50, new Vector2(300, 300), 5); //replace the first 3 numbers with the location of the thing that spawned them in later
             }
 
             //iterate over array, to setup each missile
@@ -81,7 +81,7 @@ namespace MohawkGame2D
             //move all the bullets
             for (int i = 0; i < Bullet.Length; i++)
             {
-                //call the missile update function for each missile in the array
+                //call the bullet update function for each bullet in the array
                 Bullet[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
             }
 
@@ -94,10 +94,18 @@ namespace MohawkGame2D
 
             //character stuff move later maybe
             character.Update();
-        }
-        public void movementCalls()
-        {
-            
+
+            //spawn player bullets
+            if (Input.IsKeyboardKeyDown(KeyboardKey.Space))
+            {
+                foreach (Bullet daBullet in Bullet)
+                {
+                    if (daBullet.position != new Vector2(-50, -50))
+                    {
+
+                    }
+                }
+            }
         }
     }
 }

@@ -43,7 +43,7 @@ public class Missile
             {
                 //calculate missile rotation change based on angle to player
                 //RotToPlayer = Vector2.Normalize(playerLocationFalse - this.position);
-                //RotToPlayer = MathF.Atan2((this.position.Y - playerLocationFalse.Y), (this.position.X - playerLocationFalse.X)) * 90 - 90; //y2 - y1 / x2 - x1 //worked but wasnt leading to the player so testing others
+                RotToPlayer = MathF.Atan2((this.position.Y - playerLocationFalse.Y), (this.position.X - playerLocationFalse.X)) * 90 - 90; //y2 - y1 / x2 - x1 //worked but wasnt leading to the player so testing others
                 //RotToPlayer = (float)Math //going to try normalization or something
 
                 //Console.WriteLine(RotToPlayer);
@@ -52,23 +52,23 @@ public class Missile
                 //missileRotation = RotToPlayer.X * 90;
 
                 //missile rotation change based on if RotToPlayer is positive or negative
-                if ((missileRotation - RotToPlayer) < 0) //its not propperly checking the rot requirment
-                {
-                    missileRotation -= 5;
-                    //Console.WriteLine("rot1");
-                }
-                if ((missileRotation - RotToPlayer) > 0)
+                if ((missileRotation + RotToPlayer) > 0) //its not propperly checking the rot requirment
                 {
                     missileRotation += 5;
-                    //Console.WriteLine("rot2");
+                    Console.WriteLine("rot1");
                 }
+                else if ((missileRotation - RotToPlayer) < 0)
+                {
+                    missileRotation -= 5;
+                    Console.WriteLine("rot2");
+                }
+
                 if (Math.Abs(missileRotation) > 360)
                 {
                     missileRotation = 0;
                 }
 
-                //Console.WriteLine("{0}, {1}", RotToPlayer, missileRotation);
-                //Console.WriteLine(missileRotation - RotToPlayer);
+                Console.WriteLine("{0}, {1}", RotToPlayer, missileRotation);
                 //calculate missile X speed based on rotation of the missile
                 this.missileSpeed.X += MathF.Cos(this.missileRotation * (MathF.PI / 180)) * 0.1f; //should be 0.5f
                 //calculate missile Y speed based on rotation of the missile
@@ -86,9 +86,13 @@ public class Missile
         }
 
         //draws the missile (temp shape, will make better once i learn how to rotate).. also need a fake thruster power to show when missile has fuel and is trying to move forwards
-        Draw.SetLineColor(255, 0, 0);
-        Draw.SetFillColor(0, 200, 0);
-        Draw.Circle(position.X, position.Y, 5);
+        if (this.position != new Vector2(-50, -50))
+        {
+            Draw.SetLineColor(255, 0, 0);
+            Draw.SetFillColor(0, 200, 0);
+            Draw.Circle(position.X, position.Y, 5);
+        }
+            
     }
 
 }

@@ -14,22 +14,27 @@ public class Bullet
     // Variables local to this class
     public Vector2 position;
     public float bulletRotation;
-    public Vector2 bulletSpeed;    
+    public Vector2 bulletSpeed;
+    float bulletLifeTime;
 
-    public void Setup(float spawnLocationX, float spawnLocationY, Vector2 spawnDirection, int spawnSpeed)
+    public void Setup(float spawnLocationX, float spawnLocationY, Vector2 targetDirection, int spawnSpeed)
     {
         this.position.X = spawnLocationX;
         this.position.Y = spawnLocationY;
         this.bulletRotation = 0;
-        this.bulletSpeed = Vector2.Normalize(spawnDirection) * spawnSpeed;
+        this.bulletSpeed = Vector2.Normalize((new Vector2 (spawnLocationX + spawnLocationY) - targetDirection)) * spawnSpeed;
+        this.bulletLifeTime = 50;
         Console.WriteLine(this.bulletSpeed);
     }
 
     public void Update(float speedX, float speedY)
     {
+        //movement not working
         this.bulletRotation += 5;
-        this.position.X += this.bulletSpeed.X * speedX;
-        this.position.Y += this.bulletSpeed.Y * speedY;
+        this.position.X -= speedX + this.bulletSpeed.X;
+        this.position.Y -= speedY + this.bulletSpeed.Y;
+
+        if (this.bulletLifeTime)
 
         //bullet draw //need to fix diagonal movement
         Graphics.Scale = 2;

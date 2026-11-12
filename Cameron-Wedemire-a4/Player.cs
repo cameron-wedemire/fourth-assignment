@@ -136,6 +136,7 @@ public class Player
             this.playerTurretRotation = 0;
         }
 
+        //draws players turret
         Graphics.Rotation = this.playerTurretRotation;
         Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), new Vector2(64, 0), new Vector2(64, 64), new Vector2(32f, 32f));
     }
