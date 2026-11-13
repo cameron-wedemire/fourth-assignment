@@ -8,14 +8,17 @@ namespace MohawkGame2D;
 
 public class Missile
 {
+    //directories
+    Texture2D playerAndMunitionGraphics = Graphics.LoadTexture("../../../../assets/graphics/64x64 sem1 E120 a4 sprite sheet -p1 player and munitions.png");
+
     // Variables local to this class
     public Vector2 position;
     float fuel;
     public float distanceToPlayer;
-    public float missileRotation;
+    //public float missileRotation;
     public Vector2 missileSpeed;
-    //Vector2 RotToPlayer;
-    float RotToPlayer;
+    Vector2 RotToPlayer;
+    //float RotToPlayer;
     Vector2 playerLocationFalse = new Vector2(300, 300); //just for calculations that need Vector2s
 
     public void Setup(float spawnLocationX, float spawnLocationY, float spawnRotation) //the numbers are the location of the thing that spawned them in
@@ -24,7 +27,7 @@ public class Missile
         this.position.Y = spawnLocationY;
         this.fuel = 50;
         this.distanceToPlayer = (300 - this.position.X) + (300 - this.position.Y);
-        this.missileRotation = spawnRotation + 90; //for some reason it needs a +90 to fly forwards instead of sideways
+        //this.missileRotation = spawnRotation + 90; //for some reason it needs a +90 to fly forwards instead of sideways
         missileSpeed = new Vector2(0,0);
     }
 
@@ -56,12 +59,14 @@ public class Missile
             this.position.Y = -50;
         }
 
-        //draws the missile (temp shape, will make better once i learn how to rotate).. also need a fake thruster power to show when missile has fuel and is trying to move forwards
+        //draws the missile (need a fake thruster power to show when missile has fuel and is trying to move forwards)
         if (this.position != new Vector2(-50, -50))
         {
-            Draw.SetLineColor(255, 0, 0);
-            Draw.SetFillColor(0, 200, 0);
-            Draw.Circle(position.X, position.Y, 5);
+            Graphics.Scale = 2;
+            RotToPlayer = Vector2.Normalize(playerLocationFalse - this.position);
+            Graphics.Rotation = MathF.Atan2(RotToPlayer.Y, RotToPlayer.X) * (180 / MathF.PI) + 90; //fix to face player later
+            Console.WriteLine(Graphics.Rotation);
+            Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(0, 64), new Vector2(64, 64), new Vector2(32f, 32f));
         }
             
     }
@@ -115,7 +120,7 @@ public class Missile
 
 //Console.WriteLine("{0}, {1}", RotToPlayer, missileRotation);
 //                //calculate missile X speed based on rotation of the missile
-//                this.missileSpeed.X += MathF.Cos(this.missileRotation * (MathF.PI / 180)) * 0.1f; //should be 0.5f
+//                this.missileSpeed.X += MathF.Cos(this.missileRotation * (180 / MathF.PI)) * 0.1f; //should be 0.5f
 //                //calculate missile Y speed based on rotation of the missile
-//                this.missileSpeed.Y += MathF.Sin(this.missileRotation * (MathF.PI / 180)) * 0.1f; //should be 0.5f
+//                this.missileSpeed.Y += MathF.Sin(this.missileRotation * (180 / MathF.PI)) * 0.1f; //should be 0.5f
 //----------------------------

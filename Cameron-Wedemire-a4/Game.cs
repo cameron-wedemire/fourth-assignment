@@ -37,7 +37,7 @@ namespace MohawkGame2D
                 //for each element in arrey, create new Bullet
                 Bullet[i] = new Bullet();
                 //setup the munition that was just made
-                Bullet[i].Setup(-50, -50, new Vector2(0, 0), 0); //replace the first 3 numbers with the location of the thing that spawned them in later
+                Bullet[i].Setup(-50, -50, new Vector2(1, 1), 0, 0); //replace the first 3 numbers with the location of the thing that spawned them in later
             }
 
             //iterate over array, to setup each missile
@@ -78,6 +78,23 @@ namespace MohawkGame2D
                 dustParticle[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
             }
 
+            //character stuff move later maybe
+            character.Update();
+
+            //spawn player bullets
+            if (Input.IsKeyboardKeyPressed(KeyboardKey.Space))
+            {
+                //move all the bullets
+                for (int i = 0; i < Bullet.Length; i++)
+                {
+                    if (Bullet[i].position == new Vector2(-50, -50))
+                    {
+                        Bullet[i].Setup(300, 300, new Vector2(MathF.Cos((character.playerTurretRotation + 90) * (180 / MathF.PI)), MathF.Sin((character.playerTurretRotation + 90) * (180 / MathF.PI))), 5, 10);
+                        i = Bullet.Length;
+                    }
+                }
+            }
+
             //move all the bullets
             for (int i = 0; i < Bullet.Length; i++)
             {
@@ -95,22 +112,6 @@ namespace MohawkGame2D
                 Missile[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
             }
 
-            //character stuff move later maybe
-            character.Update();
-
-            //spawn player bullets
-            if (Input.IsKeyboardKeyPressed(KeyboardKey.Space))
-            {
-                //move all the bullets
-                for (int i = 0; i < Bullet.Length; i++)
-                {
-                    if (Bullet[i].position == new Vector2(-50, -50))
-                    {
-                        Bullet[i].Setup(300, 300, new Vector2(MathF.Cos((character.playerTurretRotation + 90) * (MathF.PI / 180)), MathF.Sin((character.playerTurretRotation + 90) * (MathF.PI / 180))),5);
-                        i = Bullet.Length;
-                    }
-                }
-            }
         }
     }
 }

@@ -17,12 +17,14 @@ public class Bullet
     public Vector2 bulletSpeed;
     float bulletLifeTime;
 
-    public void Setup(float spawnLocationX, float spawnLocationY, Vector2 targetDirection, float spawnSpeed)
+    public void Setup(float spawnLocationX, float spawnLocationY, Vector2 targetDirection, int spawnSpeed, float berralLength)
     {
-        this.position.X = spawnLocationX;
-        this.position.Y = spawnLocationY;
-        this.bulletRotation = 0;
         this.bulletSpeed = Vector2.Normalize((new Vector2 (spawnLocationX + spawnLocationY) * targetDirection)) * spawnSpeed;
+        //spawn the bullet past the berral
+        this.position.X = spawnLocationX - (this.bulletSpeed.X * berralLength);
+        this.position.Y = spawnLocationY - (this.bulletSpeed.Y * berralLength);
+        Console.WriteLine("{0} {1}", "pos", this.position);
+        this.bulletRotation = 0;
         this.bulletLifeTime = 50;
         Console.WriteLine(this.bulletSpeed);
         Console.WriteLine("");
@@ -32,7 +34,7 @@ public class Bullet
     public void Update(float speedX, float speedY)
     {
         //movement not working
-        this.bulletRotation += 5;
+        this.bulletRotation += 30;
         this.position.X -= speedX + this.bulletSpeed.X;
         this.position.Y -= speedY + this.bulletSpeed.Y;
 
