@@ -19,6 +19,8 @@ namespace MohawkGame2D
         Missile[] Missile = new Missile[5];//array of missiles
 
         int levelNumber;
+        //the spawn index is for the missle and bullet spawn functions so it can tell which munition is ready to be spawned
+        int spawnIndex;
 
         /// <summary>
         ///     Setup runs once before the game loop begins.
@@ -46,7 +48,7 @@ namespace MohawkGame2D
                 //for each element in arrey, create new Missile
                 Missile[i] = new Missile();
                 //setup the munition that was just made
-                Missile[i].Setup(50, 50, 0); //replace the numbers with the location of the thing that spawned them in later
+                Missile[i].Setup(-50, -50, -21); //replace the numbers with the location of the thing that spawned them in later
             }
 
             //itterate over array, to setup each dust particle
@@ -57,8 +59,6 @@ namespace MohawkGame2D
                 //setup the dust particle that was just made
                 dustParticle[i].Setup();
             }
-
-            //character.Setup();
             character.Setup();
 
             levelNumber = 1;
@@ -77,6 +77,13 @@ namespace MohawkGame2D
                 //call the background update function for each dust particle in the array
                 dustParticle[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
             }
+            
+            //move all the missiles
+            for (int i = 0; i < Missile.Length; i++)
+            {
+                //call the missile update function for each missile in the array
+                Missile[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
+            }
 
             //character stuff move later maybe
             character.Update();
@@ -84,7 +91,7 @@ namespace MohawkGame2D
             //spawn player bullets
             if (Input.IsKeyboardKeyPressed(KeyboardKey.Space))
             {
-                //move all the bullets
+                //check all the bullets to find the first one that is ready to be spawned
                 for (int i = 0; i < Bullet.Length; i++)
                 {
                     if (Bullet[i].position == new Vector2(-50, -50))
@@ -93,6 +100,8 @@ namespace MohawkGame2D
                         i = Bullet.Length;
                     }
                 }
+                //findSpawnIndex(Bullet);
+                //Bullet[spawnIndex].Setup(300, 300, new Vector2(MathF.Cos((character.playerTurretRotation + 90) * (MathF.PI / 180)), MathF.Sin((character.playerTurretRotation + 90) * (MathF.PI / 180))), 5, 10);
             }
 
             //move all the bullets
@@ -105,13 +114,35 @@ namespace MohawkGame2D
                 }
             }
 
-            //move all the missiles
-            for (int i = 0; i < Missile.Length; i++)
-            {
-                //call the missile update function for each missile in the array
-                Missile[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
-            }
 
+            //temp for testing
+            //spawn player bullets
+            if (Input.IsKeyboardKeyPressed(KeyboardKey.K))
+            {
+                //check all the missiles to find the first one that is ready to be spawned
+                for (int i = 0; i < Missile.Length; i++)
+                {
+                    if (Missile[i].position == new Vector2(-50, -50))
+                    {
+                        Missile[i].Setup(Random.Float(0,Window.Width), Random.Float(0, Window.Width), 50);
+                        i = Missile.Length;
+                    }
+                }
+            }
         }
+
+        //failed attempt at making the spawn functions simpler
+        //public void findSpawnIndex(Index group)
+        //{
+        //    //check all the group to find the first one that is ready to be spawned
+        //    for (int i = 0; i < group.Length; i++)
+        //    {
+        //        if (group[i].position == new Vector2(-50, -50))
+        //        {
+        //            spawnIndex = i;
+        //            i = Bullet.Length;
+        //        }
+        //    }
+        //}
     }
 }

@@ -19,6 +19,7 @@ public class Bullet
 
     public void Setup(float spawnLocationX, float spawnLocationY, Vector2 targetDirection, int spawnSpeed, float berralLength)
     {
+        //the bullet setup requests the location and direction of its spawn so it knows how to setup its move speed
         this.bulletSpeed = Vector2.Normalize((new Vector2 (spawnLocationX + spawnLocationY) * targetDirection)) * spawnSpeed;
         //spawn the bullet past the berral
         this.position.X = spawnLocationX - (this.bulletSpeed.X * berralLength);

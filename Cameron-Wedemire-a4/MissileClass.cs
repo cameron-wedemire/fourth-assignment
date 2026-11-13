@@ -21,13 +21,15 @@ public class Missile
     float RotToPlayerFloat;
     Vector2 playerLocationFalse = new Vector2(300, 300); //just for calculations that need Vector2s
 
-    public void Setup(float spawnLocationX, float spawnLocationY, float spawnRotation) //the numbers are the location of the thing that spawned them in
+    public void Setup(float spawnLocationX, float spawnLocationY, float spawnFuel)
     {
+        //the reason for spawnFuel is so when starting the game it doesnt spawn all 5 at once, 50 fuel seems to be a good amount
         this.position.X = spawnLocationX;
         this.position.Y = spawnLocationY;
-        this.fuel = 50;
+        this.fuel = spawnFuel;
         this.distanceToPlayer = (300 - this.position.X) + (300 - this.position.Y);
-        this.missileRotation = spawnRotation;
+        RotToPlayerVector = Vector2.Normalize(playerLocationFalse - this.position);
+        this.missileRotation = MathF.Atan2(RotToPlayerVector.Y, RotToPlayerVector.X) * (180 / MathF.PI);
         missileSpeed = new Vector2(0,0);
     }
 
@@ -36,13 +38,10 @@ public class Missile
         //moves the missile when it has fuel
         if (fuel > -20)
         {
-            //calculate distance to player
-            this.distanceToPlayer = Math.Abs(playerLocationFalse.X - this.position.X) + Math.Abs(playerLocationFalse.Y - this.position.Y);
-
-            fuel -= 0.1f;
+            this.fuel -= 0.1f;
 
             //if fuel is above 0 allow thrust to increase and missile rotation to change
-            if (fuel > 0)
+            if (this.fuel > 0)
             {
                 //missile rotation towards player (would have needed a statement of target location but player doesnt have missiles so only need player location which is always (300, 300))
                 RotToPlayerVector = Vector2.Normalize(playerLocationFalse - this.position);
@@ -79,12 +78,28 @@ public class Missile
                         }
                     }
                 }
+                
+                //the following is to detect if the missile is close enough for its prox fuse to detect the player and explode
+                //calculate distance to player
+                this.distanceToPlayer = Math.Abs(playerLocationFalse.X - this.position.X) + Math.Abs(playerLocationFalse.Y - this.position.Y);
+                if (this.distanceToPlayer < 130)
+                {
+                    Console.WriteLine(this.distanceToPlayer);
+                    //sets fuel to -15 so it will explode the same as if fuel runs out, this makes it so the explosion will drift and not track the player
+                    this.fuel = -15;
+                }
             }
-
+            else if (this.fuel < -15)
+            {
+                Graphics.Scale = (-5) - (this.fuel / 3) + 1;
+                Graphics.Rotation = this.missileRotation * (this.fuel*2);
+                Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(0, 128), new Vector2(64, 64), new Vector2(32f, 32f));
+            }
             //to give impression of player moving the missile will move with the oposite of the player speed
             this.position.X -= speedX + missileSpeed.X;
             this.position.Y -= speedY + missileSpeed.Y;
         }
+        
         else
         {
             this.position.X = -50;
@@ -94,9 +109,13 @@ public class Missile
         //draws the missile (need a fake thruster power to show when missile has fuel and is trying to move forwards)
         if (this.position != new Vector2(-50, -50))
         {
-            Graphics.Scale = 2;
-            Graphics.Rotation = this.missileRotation + 90;
-            Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(0, 64), new Vector2(64, 64), new Vector2(32f, 32f));
+            //makes sure not to draw missile if it is in the exploding animation
+            if (fuel > -15)
+            {
+                Graphics.Scale = 2;
+                Graphics.Rotation = this.missileRotation + 90;
+                Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(0, 64), new Vector2(64, 64), new Vector2(32f, 32f));
+            }
         }
             
     }
