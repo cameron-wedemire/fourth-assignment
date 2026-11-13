@@ -89,7 +89,7 @@ namespace MohawkGame2D
                 {
                     if (Bullet[i].position == new Vector2(-50, -50))
                     {
-                        Bullet[i].Setup(300, 300, new Vector2(MathF.Cos((character.playerTurretRotation + 90) * (180 / MathF.PI)), MathF.Sin((character.playerTurretRotation + 90) * (180 / MathF.PI))), 5, 10);
+                        Bullet[i].Setup(300, 300, new Vector2(MathF.Cos((character.playerTurretRotation + 90) * (MathF.PI / 180)), MathF.Sin((character.playerTurretRotation + 90) * (MathF.PI / 180))), 5, 10);
                         i = Bullet.Length;
                     }
                 }
