@@ -11,7 +11,7 @@ public class Bullet
     //directories, can be in here or in main
     Texture2D playerAndMunitionGraphics = Graphics.LoadTexture("../../../../assets/graphics/64x64 sem1 E120 a4 sprite sheet -p1 player and munitions.png");
     
-    // Variables local to this class
+    // Variables
     public Vector2 position;
     public float bulletRotation;
     public Vector2 bulletSpeed;

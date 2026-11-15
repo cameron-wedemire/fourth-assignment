@@ -11,7 +11,7 @@ public class Missile
     //directories
     Texture2D playerAndMunitionGraphics = Graphics.LoadTexture("../../../../assets/graphics/64x64 sem1 E120 a4 sprite sheet -p1 player and munitions.png");
 
-    // Variables local to this class
+    // Variables
     public Vector2 position;
     float fuel;
     public float distanceToPlayer;

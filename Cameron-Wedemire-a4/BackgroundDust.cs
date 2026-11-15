@@ -8,7 +8,7 @@ namespace MohawkGame2D;
 
 public class backgroundDust
 {
-    // Variables local to this class
+    // Variables
     Vector2 position;
     float dustSize;
     float distanceToPlayer;

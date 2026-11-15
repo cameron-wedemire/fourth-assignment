@@ -146,3 +146,6 @@ namespace MohawkGame2D
         //}
     }
 }
+
+//ToDo:
+//make 3 levels, first is 2 gun platform enemies, 2nd is a single missile platform enemy, 3rd is a missile platform with 4 gun platforms.. make sure the turrets can fire over each other
