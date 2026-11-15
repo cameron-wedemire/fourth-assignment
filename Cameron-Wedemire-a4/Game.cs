@@ -17,10 +17,10 @@ namespace MohawkGame2D
         //munitions, friend and foe in same group but each has its own this.friend number (add later)
         Bullet[] Bullet = new Bullet[5];//array of bullets
         Missile[] Missile = new Missile[5];//array of missiles
+        Platform enemyPlatform = new Platform();
 
-        int levelNumber;
-        //the spawn index is for the missle and bullet spawn functions so it can tell which munition is ready to be spawned
-        int spawnIndex;
+        ////the spawn index is for the missle and bullet spawn functions so it can tell which munition is ready to be spawned
+        //int spawnIndex;
 
         /// <summary>
         ///     Setup runs once before the game loop begins.
@@ -61,7 +61,7 @@ namespace MohawkGame2D
             }
             character.Setup();
 
-            levelNumber = 1;
+            enemyPlatform.Setup(0,0);
         }
 
         /// <summary>
@@ -129,6 +129,9 @@ namespace MohawkGame2D
                     }
                 }
             }
+
+            //temp
+            enemyPlatform.Update(character.playerSpeed.X, character.playerSpeed.Y);
         }
 
         //failed attempt at making the spawn functions simpler
@@ -149,3 +152,5 @@ namespace MohawkGame2D
 
 //ToDo:
 //make 3 levels, first is 2 gun platform enemies, 2nd is a single missile platform enemy, 3rd is a missile platform with 4 gun platforms.. make sure the turrets can fire over each other
+//fix public variables so only those that need to be public are public
+//test removing the f from the 32 offset
