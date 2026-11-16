@@ -36,41 +36,42 @@ public class Platform
         this.position.X -= speedX;
         this.position.Y -= speedY;
 
-        ////temp visal to show all platform sprites
-        //Graphics.Scale = 3;
-        //Graphics.Rotation = 0;
-
-        //Graphics.DrawSubset(platformGraphics, this.position, new Vector2(0,0), new Vector2(64, 64), new Vector2(32f, 32f));
-        //Graphics.DrawSubset(platformGraphics, this.position + new Vector2(150,0), new Vector2(64, 0), new Vector2(64, 64), new Vector2(32f, 32f));
-        //Graphics.DrawSubset(platformGraphics, this.position + new Vector2(250,0), new Vector2(128, 0), new Vector2(64, 64), new Vector2(32f, 32f));
-
-        //Graphics.DrawSubset(platformGraphics, this.position + new Vector2(0,150), new Vector2(0, 64), new Vector2(64, 64), new Vector2(32f, 32f));
-        //Graphics.DrawSubset(platformGraphics, this.position + new Vector2(150,150), new Vector2(64, 64), new Vector2(64, 64), new Vector2(32f, 32f));
-        //Graphics.DrawSubset(platformGraphics, this.position + new Vector2(250,150), new Vector2(128, 64), new Vector2(64, 64), new Vector2(32f, 32f));
+        //temp level 1 visual
+        if (levelNumber == 1)
+        {
+            platformDraw(-10, 0, 0, 1, 3, -45);
+            platformDraw(10, 0, 0, 1, 3, 135);
+        }
 
 
-        ////temp level 1
-        //Graphics.Scale = 3;
-        //Graphics.Rotation = -45;
-        //Graphics.DrawSubset(platformGraphics, this.position + new Vector2(-32, 0), new Vector2(0, 64), new Vector2(64, 64), new Vector2(32f, 32f));
+        //temp level 2 visual
+        if (levelNumber == 2)
+        {
+            platformDraw(0, 0, 0, 0, 3, 0);
+        }
 
-        //Graphics.Rotation = +135;
-        //Graphics.DrawSubset(platformGraphics, this.position + new Vector2(32, 0), new Vector2(0, 64), new Vector2(64, 64), new Vector2(32f, 32f));
 
-        ////temp level 1 turrets
-        //turretAngleFinder(-32, 0);
-        ////Graphics.Rotation = RotToPlayerFloat;
-        //Graphics.DrawSubset(platformGraphics, this.position + new Vector2(-32, 0), new Vector2(128, 64), new Vector2(64, 64), new Vector2(32f, 32f));
-        //turretAngleFinder(+32, 0);
-
-        //Graphics.DrawSubset(platformGraphics, this.position + new Vector2(32, 0), new Vector2(128, 64), new Vector2(64, 64), new Vector2(32f, 32f));
-
-        //temp level 1 m2
-        platformDraw(-32, 0, 0, 1, 3, -45);
-        platformDraw(32, 0, 0, 1, 3, 135);
+        //temp level 3 visual
+        if (levelNumber == 3)
+        {
+            //draw gun platforms
+            platformDraw(-17, -17, 0, 1, 3, 0);
+            platformDraw(17, -17, 0, 1, 3, 90);
+            platformDraw(17, 17, 0, 1, 3, 180);
+            platformDraw(-17, 17, 0, 1, 3, 270);
+            
+            //draw missile platform
+            platformDraw(0, 0, 0, 0, 3, 0);
+        }
+        
+        //temp level change for testing
+        if (Input.IsKeyboardKeyPressed(KeyboardKey.H))
+        {
+            levelNumber += 1;
+        }
     }
 
-    public void turretAngleFinder(float offsetCenterX, float offsetCenterY)
+    public void turretAngleFinder(float offsetCenterX, float offsetCenterY) //later make it so that when its not able to aim at the enemy it goes to an idle angle
     {
         //needed for the turrets to know what is in their available field of fire
         this.RotToPlayerVector = Vector2.Normalize(playerLocationFalse - (this.position + new Vector2(offsetCenterX, offsetCenterY)));
@@ -85,11 +86,11 @@ public class Platform
         //draw the platform
         Graphics.Scale = platformScale;
         Graphics.Rotation = platformRotation;
-        Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX, offsetCenterY), new Vector2(spriteLocationX * 64, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32f, 32f));
+        Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(spriteLocationX * 64, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32f, 32f));
 
         //draw turret ontop of the platform
-        turretAngleFinder(offsetCenterX, offsetCenterY);
-        Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX, offsetCenterY), new Vector2(128, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32f, 32f));
+        turretAngleFinder(offsetCenterX * platformScale, offsetCenterY * platformScale);
+        Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(128, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32f, 32f));
     }
 }
 

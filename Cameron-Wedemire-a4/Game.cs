@@ -13,6 +13,9 @@ namespace MohawkGame2D
         //variables
         backgroundDust[] dustParticle = new backgroundDust[50]; //array of background dust particles
         Player character = new Player(); //the player character
+        //indexes im implimenting soon
+        int bulletSpawnIndex = 0;
+        int missileSpawnIndex = 0;
 
         //munitions, friend and foe in same group but each has its own this.friend number (add later)
         Bullet[] Bullet = new Bullet[5];//array of bullets
@@ -154,3 +157,10 @@ namespace MohawkGame2D
 //make 3 levels, first is 2 gun platform enemies, 2nd is a single missile platform enemy, 3rd is a missile platform with 4 gun platforms.. make sure the turrets can fire over each other
 //fix public variables so only those that need to be public are public
 //test removing the f from the 32 offset
+//if you have enough time try to make a loop function that also teleports the bullets? either that or make a homing beacon to show you the direction to the enemy base
+
+//give the enemies and player timers for weapon fire that tell it when it can fire (weapon cooldowns, maybe have the guns fire in 3 round bursts? for 3 round bursts you would need 6 bullets per gun..)
+    //give the bullet class an index for which bullets have been fired
+
+//thigns i might change;
+//maybe turn the player aiming into mouse control instead of Q/E as I now have code for the enemy turrets that use vectors so it would be easier to impliment now

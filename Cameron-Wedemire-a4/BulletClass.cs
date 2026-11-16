@@ -32,7 +32,7 @@ public class Bullet
         Console.WriteLine(targetDirection);
     }
 
-    public void Update(float speedX, float speedY)
+    public void Update(float speedX, float speedY) //add a thing that tells it to scale the bullet along with its parent guns scale later
     {
         //movement not working
         this.bulletRotation += 30;
