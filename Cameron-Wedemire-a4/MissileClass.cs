@@ -95,7 +95,7 @@ public class Missile
             {
                 Graphics.Scale = (-5) - (this.fuel / 3) + 1;
                 Graphics.Rotation = this.missileRotation * (this.fuel*2);
-                Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(0, 128), new Vector2(64, 64), new Vector2(32f, 32f));
+                Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(0, 128), new Vector2(64, 64), new Vector2(32, 32));
             }
             //to give impression of player moving the missile will move with the oposite of the player speed
             this.position.X -= speedX + missileSpeed.X;
@@ -116,7 +116,7 @@ public class Missile
             {
                 Graphics.Scale = 2;
                 Graphics.Rotation = this.missileRotation + 90;
-                Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(0, 64), new Vector2(64, 64), new Vector2(32f, 32f));
+                Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(0, 64), new Vector2(64, 64), new Vector2(32, 32));
 
                 //draw a display icon on the edge of the screen to tell player when a missile is near the edge of the screen but is not visable
                 //if the missile is not on the screen or isnt close enough to the screen it will hide the location notification, otherwise it will display the blinking dot on the correct location on the edge of the screen

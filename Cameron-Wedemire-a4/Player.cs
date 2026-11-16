@@ -110,7 +110,7 @@ public class Player
         Graphics.Scale = 2;
         Graphics.Rotation = this.playerRotation;
         //Graphics.DrawSubset
-        Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), new Vector2(0, 0), new Vector2(64,64), new Vector2(32f, 32f)); //graphic starts from top left of the file.. thing to draw, location, fileLocation, file size, offset
+        Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), new Vector2(0, 0), new Vector2(64,64), new Vector2(32, 32)); //graphic starts from top left of the file.. thing to draw, location, fileLocation, file size, offset
 
         //draw turret (need to add rot to curser)
         //this.playerTurretRotation = MathF.Atan2(Input.GetMouseY(), Input.GetMouseX()) * 360; //(180 / MathF.PI);
@@ -138,7 +138,7 @@ public class Player
 
         //draws players turret
         Graphics.Rotation = this.playerTurretRotation;
-        Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), new Vector2(64, 0), new Vector2(64, 64), new Vector2(32f, 32f));
+        Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), new Vector2(64, 0), new Vector2(64, 64), new Vector2(32, 32));
     }
     public void CapPlayerSpeed() //PlayerSpeedRatio
     {

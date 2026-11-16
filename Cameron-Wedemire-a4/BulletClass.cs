@@ -50,6 +50,6 @@ public class Bullet
         //bullet draw //need to fix diagonal movement
         Graphics.Scale = 2;
         Graphics.Rotation = this.bulletRotation;
-        Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(64, 64), new Vector2(64, 64), new Vector2(32f, 32f));
+        Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(64, 64), new Vector2(64, 64), new Vector2(32, 32));
     }
 }

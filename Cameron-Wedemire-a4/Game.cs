@@ -141,10 +141,9 @@ namespace MohawkGame2D
 }
 
 //ToDo:
-//make 3 levels, first is 2 gun platform enemies, 2nd is a single missile platform enemy, 3rd is a missile platform with 4 gun platforms.. make sure the turrets can fire over each other
 //fix public variables so only those that need to be public are public
-//test removing the f from the 32 offset
 //if you have enough time try to make a loop function that also teleports the bullets? either that or make a homing beacon to show you the direction to the enemy base
+//if you have enough time try making the turrets not rotate through their own platform group
 
 //give the enemies and player timers for weapon fire that tell it when it can fire (weapon cooldowns, maybe have the guns fire in 3 round bursts? for 3 round bursts you would need 6 bullets per gun..)
     //give the bullet class an index for which bullets have been fired
