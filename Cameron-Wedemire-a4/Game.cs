@@ -13,7 +13,8 @@ namespace MohawkGame2D
         //variables
         backgroundDust[] dustParticle = new backgroundDust[50]; //array of background dust particles
         Player character = new Player(); //the player character
-        //indexes im implimenting soon
+
+        //these give guns and missile launchers a way to know which munition they are to move, each gun turret has 6 bullets and each missile turret has 2 missiles //NOT IMPLIMENTED YET
         int bulletSpawnIndex = 0;
         int missileSpawnIndex = 0;
 
@@ -136,20 +137,6 @@ namespace MohawkGame2D
             //temp
             enemyPlatform.Update(character.playerSpeed.X, character.playerSpeed.Y);
         }
-
-        //failed attempt at making the spawn functions simpler
-        //public void findSpawnIndex(Index group)
-        //{
-        //    //check all the group to find the first one that is ready to be spawned
-        //    for (int i = 0; i < group.Length; i++)
-        //    {
-        //        if (group[i].position == new Vector2(-50, -50))
-        //        {
-        //            spawnIndex = i;
-        //            i = Bullet.Length;
-        //        }
-        //    }
-        //}
     }
 }
 
@@ -164,3 +151,4 @@ namespace MohawkGame2D
 
 //thigns i might change;
 //maybe turn the player aiming into mouse control instead of Q/E as I now have code for the enemy turrets that use vectors so it would be easier to impliment now
+//impliment window.width and height more

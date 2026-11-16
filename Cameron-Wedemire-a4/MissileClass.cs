@@ -20,6 +20,8 @@ public class Missile
     Vector2 RotToPlayerVector;
     float RotToPlayerFloat;
     Vector2 playerLocationFalse = new Vector2(300, 300); //just for calculations that need Vector2s
+    float missileNotificationBlinkTimer = 0;
+    Vector2 missileNotificationBlinkLocation = new Vector2(-50, -50);
 
     public void Setup(float spawnLocationX, float spawnLocationY, float spawnFuel)
     {
@@ -115,6 +117,59 @@ public class Missile
                 Graphics.Scale = 2;
                 Graphics.Rotation = this.missileRotation + 90;
                 Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(0, 64), new Vector2(64, 64), new Vector2(32f, 32f));
+
+                //draw a display icon on the edge of the screen to tell player when a missile is near the edge of the screen but is not visable
+                //if the missile is not on the screen or isnt close enough to the screen it will hide the location notification, otherwise it will display the blinking dot on the correct location on the edge of the screen
+                if (((this.position.X > 0) && (this.position.X < Window.Width) && (this.position.Y > 0) && (this.position.Y < Window.Height)) || (this.distanceToPlayer > 1500))
+                {
+                    missileNotificationBlinkLocation.X = -50;
+                    missileNotificationBlinkLocation.Y = -50;
+                    
+                }
+                else
+                {
+                    //keep notification's X on screen
+                    if (this.position.X > Window.Width)
+                    {
+                        missileNotificationBlinkLocation.X = Window.Width - 5;
+                    }
+                    else if (this.position.X < 0)
+                    {
+                        missileNotificationBlinkLocation.X = 5;
+                    }
+                    else
+                    {
+                        missileNotificationBlinkLocation.X = this.position.X;
+                    }
+
+                    //keep notification's Y on screen
+                    if (this.position.Y > Window.Height)
+                    {
+                        missileNotificationBlinkLocation.Y = Window.Height - 5;
+                    }
+                    else if (this.position.Y < 0)
+                    {
+                        missileNotificationBlinkLocation.Y = 5;
+                    }
+                    else
+                    {
+                        missileNotificationBlinkLocation.Y = this.position.Y;
+                    }
+                }
+
+                //timer to make the notification blink in and out
+                missileNotificationBlinkTimer += 0.1f;
+
+                if (missileNotificationBlinkTimer > 3)
+                {
+                    missileNotificationBlinkTimer = 0;
+                }
+                if (missileNotificationBlinkTimer < 1)
+                {
+                    Draw.SetLineColor(255, 255, 255);
+                    Draw.SetFillColor(255, 0, 0);
+                    Draw.Circle(missileNotificationBlinkLocation, 10);
+                }
             }
         }
             
