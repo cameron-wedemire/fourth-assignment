@@ -18,6 +18,14 @@ namespace MohawkGame2D
         public int bulletSpawnIndex = 0;
         public int missileSpawnIndex = 0;
 
+        //gun cooldowns are used to fire after the cooling is done (so player can hold down fire and enemies can fire correctly)
+        int playerGunCooldown = 0;
+        int platformMissileCooldown = 0;
+        int platformGunCooldown1 = 0;
+        int platformGunCooldown2 = 0;
+        int platformGunCooldown3 = 0;
+        int platformGunCooldown4 = 0;
+
         //quick change for bullet and missile numbers so the index reset funciton at the bottom of the main update area doesnt break
         int numberOfBullets = 5;
         int numberOfMissiles = 5;
@@ -69,7 +77,7 @@ namespace MohawkGame2D
             }
             character.Setup();
 
-            enemyPlatform.Setup(0,0);
+            enemyPlatform.Setup(0, 0);
         }
 
         /// <summary>
@@ -85,7 +93,7 @@ namespace MohawkGame2D
                 //call the background update function for each dust particle in the array
                 dustParticle[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
             }
-            
+
             //move all the missiles
             for (int i = 0; i < Missile.Length; i++)
             {
@@ -93,23 +101,21 @@ namespace MohawkGame2D
                 Missile[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
             }
 
-            //character stuff move later maybe
+            //character update and spawn bullets
             character.Update();
 
-            //spawn player bullets
-            if (Input.IsKeyboardKeyPressed(KeyboardKey.Space))
+            if (Input.IsMouseButtonDown(MouseButton.Left))
             {
-                //check all the bullets to find the first one that is ready to be spawned
-                for (int i = 0; i < Bullet.Length; i++)
+                if (playerGunCooldown == 0)
                 {
-                    if (Bullet[i].position == new Vector2(-50, -50))
-                    {
-                        Bullet[i].Setup(300, 300, new Vector2(MathF.Cos((character.playerTurretRotation + 90) * (MathF.PI / 180)), MathF.Sin((character.playerTurretRotation + 90) * (MathF.PI / 180))), 5, 10);
-                        i = Bullet.Length;
-                    }
+                    Bullet[bulletSpawnIndex].Setup(300, 300, new Vector2(MathF.Cos((character.playerTurretRotation + 90) * (MathF.PI / 180)), MathF.Sin((character.playerTurretRotation + 90) * (MathF.PI / 180))), 7, 50);
+                    bulletSpawnIndex += 1;
                 }
-                //findSpawnIndex(Bullet);
-                //Bullet[spawnIndex].Setup(300, 300, new Vector2(MathF.Cos((character.playerTurretRotation + 90) * (MathF.PI / 180)), MathF.Sin((character.playerTurretRotation + 90) * (MathF.PI / 180))), 5, 10);
+                playerGunCooldown += 1;
+                if (playerGunCooldown > 40)
+                {
+                    playerGunCooldown = 0;
+                }
             }
 
             //move all the bullets
@@ -123,33 +129,61 @@ namespace MohawkGame2D
             }
 
 
-            //temp for testing
-            //spawn player bullets
-            if (Input.IsKeyboardKeyPressed(KeyboardKey.K))
-            {
-                //check all the missiles to find the first one that is ready to be spawned
-                Missile[bulletSpawnIndex].Setup(Random.Float(0,Window.Width), Random.Float(0, Window.Width), 50);
-                bulletSpawnIndex += 1;
-            }
+            ////temp for testing
+            ////spawn missiles
+            //if (Input.IsKeyboardKeyPressed(KeyboardKey.K))
+            //{
+            //    //check all the missiles to find the first one that is ready to be spawned
+            //    Missile[missileSpawnIndex].Setup(Random.Float(0,Window.Width), Random.Float(0, Window.Width), 50);
+            //    missileSpawnIndex += 1;
+            //}
+
+
+
+            //draw the enemy platform which changes based on level
+            enemyPlatform.Update(character.playerSpeed.X, character.playerSpeed.Y, updateThisRoundTrueFalse);
+
+            //if i had multiple platforms at once i would have made this use platform[] in some way
+            platformTurrets();
 
             //reset bullet and missile indexes if they are too high
-            if (bulletSpawnIndex > numberOfBullets)
+            if (bulletSpawnIndex >= numberOfBullets)
             {
                 bulletSpawnIndex = 0;
             }
-            if (missileSpawnIndex > numberOfMissiles)
+            if (missileSpawnIndex >= numberOfMissiles)
             {
                 missileSpawnIndex = 0;
             }
+        }
 
-            //temp
-            enemyPlatform.Update(character.playerSpeed.X, character.playerSpeed.Y);
+        //advances weapon cooldowns on alive platform turrets
+        public void platformTurrets()
+        {
+            //platformMissileCooldown, platformGunCooldown1
+            //checks if turrets exist and then uses cooldown values, not nested as that would use more lines of code with else if statements
+            //fire platform missile if it exists
+            if (enemyPlatform.missileTurretHp != 0)
+            {
+                if (platformMissileCooldown == 0)
+                {
+                    Missile[missileSpawnIndex].Setup(enemyPlatform.position.X, enemyPlatform.position.Y, 50);
+                    missileSpawnIndex += 1;
+                }
+                platformMissileCooldown += 1;
+                if (platformMissileCooldown > 300)
+                {
+                    platformMissileCooldown = 0;
+                }
+            }
+            
         }
     }
 }
 
 //ToDo:
 //fix public variables so only those that need to be public are public
+//add the missile dot thing to the position of the platform
 //if you have enough time try to make a loop function that also teleports the bullets? either that or make a homing beacon to show you the direction to the enemy base
 //if you have enough time try making the turrets not rotate through their own platform group
 

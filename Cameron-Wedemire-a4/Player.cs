@@ -17,6 +17,7 @@ public class Player
     public Vector2 playerSpeed;
     public float playerRotation;
     public float playerTurretRotation;
+    Vector2 RotToCursorVector = new Vector2(0, 0);
 
     //constants
     int playerMaxSpeed = 15;
@@ -102,31 +103,12 @@ public class Player
         //Graphics.DrawSubset
         Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), new Vector2(0, 0), new Vector2(64,64), new Vector2(32, 32)); //graphic starts from top left of the file.. thing to draw, location, fileLocation, file size, offset
 
-        //draw turret (need to add rot to curser)
-        //this.playerTurretRotation = MathF.Atan2(Input.GetMouseY(), Input.GetMouseX()) * 360; //(180 / MathF.PI);
-
-        if (Input.IsKeyboardKeyDown(KeyboardKey.E))
-        {
-            this.playerTurretRotation += 5;
-        }
-        if (Input.IsKeyboardKeyDown(KeyboardKey.Q))
-        {
-            this.playerTurretRotation -= 5;
-        }
-
-        //reset angles of player to 0 if above 360
-        
-        if (Math.Abs(this.playerRotation) >= 360)
-        {
-            this.playerRotation = 0;
-        }
-        //reset angles of players turret to 0 if above 360
-        if (Math.Abs(this.playerTurretRotation) >= 360)
-        {
-            this.playerTurretRotation = 0;
-        }
-
         //draws players turret
+
+        RotToCursorVector = Vector2.Normalize((Input.GetMousePosition()) - new Vector2(300, 300));
+
+        this.playerTurretRotation = MathF.Atan2(RotToCursorVector.Y, RotToCursorVector.X) * (180 / MathF.PI) + 90;
+        
         Graphics.Rotation = this.playerTurretRotation;
         Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), new Vector2(64, 0), new Vector2(64, 64), new Vector2(32, 32));
     }
