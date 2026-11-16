@@ -14,7 +14,10 @@ public class Platform
     //variables
     //platformType 1=gun, 2=missile
     int platformType;
-    int levelNumber;
+    public int levelNumber;
+
+    //if level changed this update it will state it for the next update
+    bool updateThisRoundTrueFalse;
 
     public Vector2 position;
     public float distanceToPlayer;
@@ -30,6 +33,7 @@ public class Platform
     //will fine toon later this is temp
     int missileTurretMaxHp = 100;
     int gunTurretMaxHp = 100;
+    int maxLevel = 3; //i think its 3, might be diff so fix later
 
     public void Setup(float spawnLocationX, float spawnLocationY)
     {
@@ -44,9 +48,11 @@ public class Platform
         this.gun2Hp = 0;
         this.gun3Hp = 0;
         this.gun4Hp = 0;
+
+        this.levelNumber = 0;
     }
 
-    public void Update(float speedX, float speedY, bool updateThisRoundTrueFalse)
+    public void Update(float speedX, float speedY)
     {
         //move the platform oposite of player speed to give appearence of player moving
         this.position.X -= speedX;
@@ -55,18 +61,28 @@ public class Platform
         //level 1 visual
         if (levelNumber == 1)
         {
+            //set turrets hp to max on level change
             if (updateThisRoundTrueFalse == true)
             {
-                this.gun1Hp = 100;
+                this.gun1Hp = gunTurretMaxHp;
+                this.gun2Hp = gunTurretMaxHp;
             }
-            platformDraw(-10, 0, 0, 1, 3, -45);
-            platformDraw(10, 0, 0, 1, 3, 135);
+
+            platformDraw(-10, 0, 0, 1, 3, -45); //gun 1
+            platformDraw(10, 0, 0, 1, 3, 135); //gun 2
         }
 
 
         //level 2 visual
         if (levelNumber == 2)
         {
+            //set turrets hp to max on level change
+            if (updateThisRoundTrueFalse == true)
+            {
+                this.missileTurretHp = missileTurretMaxHp;
+                
+            }
+
             platformDraw(0, 0, 0, 0, 3, 0);
         }
 
@@ -74,6 +90,16 @@ public class Platform
         //level 3 visual
         if (levelNumber == 3)
         {
+            //set turrets hp to max on level change
+            if (updateThisRoundTrueFalse == true)
+            {
+                this.missileTurretHp = missileTurretMaxHp;
+                this.gun1Hp = gunTurretMaxHp; //gun 1
+                this.gun2Hp = gunTurretMaxHp; //gun 1
+                this.gun3Hp = gunTurretMaxHp; //gun 1
+                this.gun4Hp = gunTurretMaxHp; //gun 1
+            }
+
             //draw gun platforms
             platformDraw(-17, -17, 0, 1, 3, 0);
             platformDraw(17, -17, 0, 1, 3, 90);
@@ -83,11 +109,16 @@ public class Platform
             //draw missile platform
             platformDraw(0, 0, 0, 0, 3, 0);
         }
-        
-        //temp level change for testing, later will be if all platform turret hp = 0 and level is less than game over number
-        if (Input.IsKeyboardKeyPressed(KeyboardKey.H))
+
+        //change level number if all turrets are at 0 HP and change updateThisRoundTrueFalse = true, otherwise set updateThisRoundTrueFalse = false so it doesnt constantly give turrets hp
+        if ((this.missileTurretHp == 0) && (this.gun1Hp == 0) && (this.gun2Hp == 0) && (this.gun3Hp == 0) && (this.gun4Hp == 0) && (levelNumber < maxLevel))
         {
             levelNumber += 1;
+            updateThisRoundTrueFalse = true;
+        }
+        else
+        {
+            updateThisRoundTrueFalse = false;
         }
     }
 
@@ -103,6 +134,8 @@ public class Platform
 
     public void platformDraw(float offsetCenterX, float offsetCenterY, int spriteLocationX, int spriteLocationY, float platformScale, float platformRotation)
     {
+        //need to make them decide if they are dead or not (hp <= 0) later
+
         //draw the platform
         Graphics.Scale = platformScale;
         Graphics.Rotation = platformRotation;

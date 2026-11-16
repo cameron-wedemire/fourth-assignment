@@ -16,6 +16,7 @@ public class Bullet
     public float bulletRotation;
     public Vector2 bulletSpeed;
     float bulletLifeTime;
+    //need to add a .team to bullets
 
     public void Setup(float spawnLocationX, float spawnLocationY, Vector2 targetDirection, int spawnSpeed, float berralLength)
     {
