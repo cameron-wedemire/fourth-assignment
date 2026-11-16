@@ -15,8 +15,12 @@ namespace MohawkGame2D
         Player character = new Player(); //the player character
 
         //these give guns and missile launchers a way to know which munition they are to move, each gun turret has 6 bullets and each missile turret has 2 missiles //NOT IMPLIMENTED YET
-        int bulletSpawnIndex = 0;
-        int missileSpawnIndex = 0;
+        public int bulletSpawnIndex = 0;
+        public int missileSpawnIndex = 0;
+
+        //quick change for bullet and missile numbers so the index reset funciton at the bottom of the main update area doesnt break
+        int numberOfBullets = 5;
+        int numberOfMissiles = 5;
 
         //munitions, friend and foe in same group but each has its own this.friend number (add later)
         Bullet[] Bullet = new Bullet[5];//array of bullets
@@ -124,14 +128,18 @@ namespace MohawkGame2D
             if (Input.IsKeyboardKeyPressed(KeyboardKey.K))
             {
                 //check all the missiles to find the first one that is ready to be spawned
-                for (int i = 0; i < Missile.Length; i++)
-                {
-                    if (Missile[i].position == new Vector2(-50, -50))
-                    {
-                        Missile[i].Setup(Random.Float(0,Window.Width), Random.Float(0, Window.Width), 50);
-                        i = Missile.Length;
-                    }
-                }
+                Missile[bulletSpawnIndex].Setup(Random.Float(0,Window.Width), Random.Float(0, Window.Width), 50);
+                bulletSpawnIndex += 1;
+            }
+
+            //reset bullet and missile indexes if they are too high
+            if (bulletSpawnIndex > numberOfBullets)
+            {
+                bulletSpawnIndex = 0;
+            }
+            if (missileSpawnIndex > numberOfMissiles)
+            {
+                missileSpawnIndex = 0;
             }
 
             //temp
@@ -148,6 +156,6 @@ namespace MohawkGame2D
 //give the enemies and player timers for weapon fire that tell it when it can fire (weapon cooldowns, maybe have the guns fire in 3 round bursts? for 3 round bursts you would need 6 bullets per gun..)
     //give the bullet class an index for which bullets have been fired
 
-//thigns i might change;
+//things i might change;
 //maybe turn the player aiming into mouse control instead of Q/E as I now have code for the enemy turrets that use vectors so it would be easier to impliment now
 //impliment window.width and height more

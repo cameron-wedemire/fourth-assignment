@@ -83,16 +83,6 @@ public class Player
             //Graphics.Rotation = 90;
             this.playerSpeed.X += 1;
 
-            ////change player Rotation
-            //if (this.playerRotation > -90 && this.playerRotation > 90)
-            //{
-            //    this.playerRotation -= 45;
-            //}
-            //else if (this.playerRotation >= -90 && this.playerRotation < 90)
-            //{
-            //    this.playerRotation += 45;
-            //}
-
             //change player Rotation
             if (this.playerRotation < 90)
             {
