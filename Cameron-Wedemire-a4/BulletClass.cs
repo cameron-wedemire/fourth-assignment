@@ -15,22 +15,26 @@ public class Bullet
     public Vector2 position;
     public float bulletRotation;
     public Vector2 bulletSpeed;
-    float bulletLifeTime;
-    //need to add a .team to bullets
+    public float bulletLifeTime;
+    public bool isPlayerBullet;
+    public bool hasHitTarget;
 
-    public void Setup(float spawnLocationX, float spawnLocationY, Vector2 targetDirection, int spawnSpeed, float berralLength)
+    public void Setup(float spawnLocationX, float spawnLocationY, Vector2 targetDirection, int spawnSpeed, float berralLength, bool playerTeam)
     {
         //the bullet setup requests the location and direction of its spawn so it knows how to setup its move speed
         this.bulletSpeed = Vector2.Normalize((new Vector2 (spawnLocationX + spawnLocationY) * targetDirection)) * spawnSpeed;
         //spawn the bullet past the berral
         this.position.X = spawnLocationX - ((this.bulletSpeed.X / spawnSpeed) * berralLength);
         this.position.Y = spawnLocationY - ((this.bulletSpeed.Y / spawnSpeed) * berralLength);
-        Console.WriteLine("{0} {1}", "pos", this.position);
+        //Console.WriteLine("{0} {1}", "pos", this.position);
         this.bulletRotation = 0;
         this.bulletLifeTime = 50;
-        Console.WriteLine(this.bulletSpeed);
-        Console.WriteLine("");
-        Console.WriteLine(targetDirection);
+        //Console.WriteLine(this.bulletSpeed);
+        //Console.WriteLine("");
+        //Console.WriteLine(targetDirection);
+
+        this.isPlayerBullet = playerTeam;
+        this.hasHitTarget = false;
     }
 
     public void Update(float speedX, float speedY) //add a thing that tells it to scale the bullet along with its parent guns scale later
@@ -47,10 +51,19 @@ public class Bullet
             this.bulletSpeed = new Vector2(0, 0);
         }
 
-
         //bullet draw //need to fix diagonal movement
         Graphics.Scale = 2;
         Graphics.Rotation = this.bulletRotation;
         Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(64, 64), new Vector2(64, 64), new Vector2(32, 32));
+    }
+
+    public void hitTargetCheck(Vector2 positionOfTarget, float hitRadius, int targetHP)
+    {
+        //float distanceToTarget = (positionOfTarget.X - this.position.X) + (positionOfTarget.Y - this.position.Y);
+        float distanceToTarget = Math.Abs(positionOfTarget.X - this.position.X) + Math.Abs(positionOfTarget.Y - this.position.Y);
+        if ((distanceToTarget < hitRadius) && (targetHP != 0))
+        {
+            this.hasHitTarget = true;
+        }
     }
 }

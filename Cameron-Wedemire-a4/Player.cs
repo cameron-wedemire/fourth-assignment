@@ -18,9 +18,12 @@ public class Player
     public float playerRotation;
     public float playerTurretRotation;
     Vector2 RotToCursorVector = new Vector2(0, 0);
+    Vector2 playerSpriteType;
 
     //constants
     int playerMaxSpeed = 15;
+    public int playerHP;
+    public bool hasBeenHitThisTurn;
 
     public void Setup()
     {
@@ -28,89 +31,110 @@ public class Player
         //this.playerRotation = -90;
         this.playerRotation = 0;
         this.playerTurretRotation = 0;
+
+        this.playerHP = 50;//balence later
+        this.hasBeenHitThisTurn = false;
     }
 
     public void Update()
     {
         //change player speed, after the if statments it will call the cap function that will lower the speed if its too high
-        if (Input.IsKeyboardKeyDown(KeyboardKey.W))
+        if (this.playerHP > 0)
         {
-            this.playerSpeed.Y -= 1;
-            //Graphics.Rotation = 0;
-            
-            //change player Rotation
-            if (this.playerRotation > 0)
+            if (Input.IsKeyboardKeyDown(KeyboardKey.W))
             {
-                this.playerRotation -= 45;
+                this.playerSpeed.Y -= 1;
+                //Graphics.Rotation = 0;
+
+                //change player Rotation
+                if (this.playerRotation > 0)
+                {
+                    this.playerRotation -= 45;
+                }
+                else if (this.playerRotation < 0)
+                {
+                    this.playerRotation += 45;
+                }
             }
-            else if (this.playerRotation < 0)
+            else if (Input.IsKeyboardKeyDown(KeyboardKey.S))
             {
-                this.playerRotation += 45;
+                //Graphics.Rotation = 180;
+                this.playerSpeed.Y += 1;
+
+                //change player Rotation
+                if (this.playerRotation < 0 && this.playerRotation > -180)
+                {
+                    this.playerRotation -= 45;
+                }
+                else if (this.playerRotation >= 0 && this.playerRotation < 180)
+                {
+                    this.playerRotation += 45;
+                }
             }
+
+            if (Input.IsKeyboardKeyDown(KeyboardKey.A))
+            {
+                //Graphics.Rotation = -90;
+                this.playerSpeed.X -= 1;
+
+                //change player Rotation
+                if (this.playerRotation > -90)
+                {
+                    this.playerRotation -= 45;
+                }
+                else if (this.playerRotation < -90)
+                {
+                    this.playerRotation += 45;
+                }
+            }
+            else if (Input.IsKeyboardKeyDown(KeyboardKey.D)) //this one is not working right
+            {
+                //Graphics.Rotation = 90;
+                this.playerSpeed.X += 1;
+
+                //change player Rotation
+                if (this.playerRotation < 90)
+                {
+                    this.playerRotation += 45;
+                }
+                else if (this.playerRotation > 90)
+                {
+                    this.playerRotation -= 45;
+                }
+            }
+
+            CapPlayerSpeed();
         }
-        else if (Input.IsKeyboardKeyDown(KeyboardKey.S))
-        {
-            //Graphics.Rotation = 180;
-            this.playerSpeed.Y += 1;
-
-            //change player Rotation
-            if (this.playerRotation < 0 && this.playerRotation > -180)
-            {
-                this.playerRotation -= 45;
-            }
-            else if (this.playerRotation >= 0 && this.playerRotation < 180)
-            {
-                this.playerRotation += 45;
-            }
-        }
-
-        if (Input.IsKeyboardKeyDown(KeyboardKey.A))
-        {
-            //Graphics.Rotation = -90;
-            this.playerSpeed.X -= 1;
-
-            //change player Rotation
-            if (this.playerRotation > -90)
-            {
-                this.playerRotation -= 45;
-            }
-            else if (this.playerRotation < -90)
-            {
-                this.playerRotation += 45;
-            }
-        }
-        else if (Input.IsKeyboardKeyDown(KeyboardKey.D)) //this one is not working right
-        {
-            //Graphics.Rotation = 90;
-            this.playerSpeed.X += 1;
-
-            //change player Rotation
-            if (this.playerRotation < 90)
-            {
-                this.playerRotation += 45;
-            }
-            else if (this.playerRotation > 90)
-            {
-                this.playerRotation -= 45;
-            }
-        }
-
-        CapPlayerSpeed();
 
         //player draw //need to fix diagonal movement
         Graphics.Scale = 2;
         Graphics.Rotation = this.playerRotation;
-        //Graphics.DrawSubset
-        Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), new Vector2(0, 0), new Vector2(64,64), new Vector2(32, 32)); //graphic starts from top left of the file.. thing to draw, location, fileLocation, file size, offset
 
-        //draws players turret
+        if (this.hasBeenHitThisTurn == false)
+        {
+            playerSpriteType = new Vector2(0, 0);
+        }
+        else
+        {
+            playerSpriteType = new Vector2(64, 128);
+            if (this.playerHP > 0)
+            {
+                this.hasBeenHitThisTurn = false;
+            }
+            
+        }
 
-        RotToCursorVector = Vector2.Normalize((Input.GetMousePosition()) - new Vector2(300, 300));
+        Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), playerSpriteType, new Vector2(64,64), new Vector2(32, 32)); //graphic starts from top left of the file.. thing to draw, location, fileLocation, file size, offset
 
-        this.playerTurretRotation = MathF.Atan2(RotToCursorVector.Y, RotToCursorVector.X) * (180 / MathF.PI) + 90;
-        
-        Graphics.Rotation = this.playerTurretRotation;
-        Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), new Vector2(64, 0), new Vector2(64, 64), new Vector2(32, 32));
+        //draws players turret BUT ONLY IF THE PLAYER IS ALIVE
+        if (this.playerHP > 0)
+        {
+            RotToCursorVector = Vector2.Normalize((Input.GetMousePosition()) - new Vector2(300, 300));
+            this.playerTurretRotation = MathF.Atan2(RotToCursorVector.Y, RotToCursorVector.X) * (180 / MathF.PI) + 90;
+
+            Graphics.Rotation = this.playerTurretRotation;
+            Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), new Vector2(64, 0), new Vector2(64, 64), new Vector2(32, 32));
+        }
     }
     public void CapPlayerSpeed() //PlayerSpeedRatio
     {

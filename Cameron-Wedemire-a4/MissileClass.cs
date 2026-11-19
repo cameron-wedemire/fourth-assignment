@@ -22,6 +22,7 @@ public class Missile
     Vector2 playerLocationFalse = new Vector2(300, 300); //just for calculations that need Vector2s
     float missileNotificationBlinkTimer = 0;
     Vector2 missileNotificationBlinkLocation = new Vector2(-50, -50);
+    public bool hasHitTarget;
 
     public void Setup(float spawnLocationX, float spawnLocationY, float spawnFuel)
     {
@@ -33,6 +34,7 @@ public class Missile
         RotToPlayerVector = Vector2.Normalize(playerLocationFalse - this.position);
         this.missileRotation = MathF.Atan2(RotToPlayerVector.Y, RotToPlayerVector.X) * (180 / MathF.PI);
         missileSpeed = new Vector2(0,0);
+        this.hasHitTarget = false;
     }
 
     public void Update(float speedX, float speedY) //the numbers are the player speed called in from game.cs
@@ -86,9 +88,9 @@ public class Missile
                 this.distanceToPlayer = Math.Abs(playerLocationFalse.X - this.position.X) + Math.Abs(playerLocationFalse.Y - this.position.Y);
                 if (this.distanceToPlayer < 130)
                 {
-                    Console.WriteLine(this.distanceToPlayer);
                     //sets fuel to -15 so it will explode the same as if fuel runs out, this makes it so the explosion will drift and not track the player
                     this.fuel = -15;
+                    this.hasHitTarget = true;
                 }
             }
             else if (this.fuel < -15)

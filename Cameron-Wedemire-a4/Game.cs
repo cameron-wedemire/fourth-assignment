@@ -58,7 +58,7 @@ namespace MohawkGame2D
                 //for each element in arrey, create new Bullet
                 Bullet[i] = new Bullet();
                 //setup the munition that was just made
-                Bullet[i].Setup(-50, -50, new Vector2(1, 1), 0, 0); //replace the first 3 numbers with the location of the thing that spawned them in later
+                Bullet[i].Setup(-50, -50, new Vector2(1, 1), 0, 0, false); //replace the first 3 numbers with the location of the thing that spawned them in later
             }
 
             //iterate over array, to setup each missile
@@ -102,16 +102,23 @@ namespace MohawkGame2D
             {
                 //call the missile update function for each missile in the array
                 Missile[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
+                if (Missile[i].hasHitTarget == true)
+                {
+                    character.playerHP -= 10;//balence later
+                    character.hasBeenHitThisTurn = true;
+                    Missile[i].hasHitTarget = false;
+                }
             }
 
-            //character update and spawn bullets
+            //character update
             character.Update();
 
+            //spawn player bullets
             if (Input.IsMouseButtonDown(MouseButton.Left))
             {
-                if (playerGunCooldown == 0)
+                if (playerGunCooldown == 0 && character.playerHP > 0)
                 {
-                    Bullet[bulletSpawnIndex].Setup(300, 300, new Vector2(MathF.Cos((character.playerTurretRotation + 90) * (MathF.PI / 180)), MathF.Sin((character.playerTurretRotation + 90) * (MathF.PI / 180))), 7, 50);
+                    Bullet[bulletSpawnIndex].Setup(300, 300, new Vector2(MathF.Cos((character.playerTurretRotation + 90) * (MathF.PI / 180)), MathF.Sin((character.playerTurretRotation + 90) * (MathF.PI / 180))), 7, 50, true);
                     bulletSpawnIndex += 1;
 
                     //reset bullet index if they are too high
@@ -134,6 +141,33 @@ namespace MohawkGame2D
                 {
                     //call the bullet update function for each bullet in the array
                     Bullet[i].Update(character.playerSpeed.X, character.playerSpeed.Y);
+
+                    //checks if it hits its target
+                    if (Bullet[i].isPlayerBullet == false)
+                    {
+                        //Bullet[i].hitTargetCheck(new Vector2(300,300));
+                        Bullet[i].hitTargetCheck(new Vector2(300, 300), 60, character.playerHP);
+                        //reset bullet and damage player if it has hit
+                        if (Bullet[i].hasHitTarget == true)
+                        {
+                            character.playerHP -= 3;//balence later
+                            Bullet[i].bulletLifeTime = 0;
+                            character.hasBeenHitThisTurn = true;
+                            Bullet[i].hasHitTarget = false;
+                        }
+                    }
+                    else
+                    {
+                        //Bullet[i].hitTargetCheck();
+                        //reset bullet and damage hit platform if it hit
+                        if (Bullet[i].hasHitTarget == true)
+                        {
+                            character.playerHP -= 3;//balence later
+                            Bullet[i].bulletLifeTime = 0;
+                            Bullet[i].hasHitTarget = false;
+                        }
+                    }
+                    
                 }
             }
 
@@ -176,7 +210,7 @@ namespace MohawkGame2D
                     tempPosition = new Vector2(enemyPlatform.position.X + 10 + ((enemyPlatform.levelNumber-1) * 17), enemyPlatform.position.Y + ((enemyPlatform.levelNumber-1) * 17));
                     tempRotValue = Vector2.Normalize(tempPosition - new Vector2(300, 300));
 
-                    Bullet[bulletSpawnIndex].Setup(tempPosition.X, tempPosition.Y, tempRotValue, 5, 50);//need target direction
+                    Bullet[bulletSpawnIndex].Setup(tempPosition.X, tempPosition.Y, tempRotValue, 5, 50, false);//need target direction
                     bulletSpawnIndex += 1;
 
                     //reset bullet index if they are too high
@@ -200,7 +234,7 @@ namespace MohawkGame2D
                     tempPosition = new Vector2(enemyPlatform.position.X - 10 - (enemyPlatform.levelNumber * 17), enemyPlatform.position.Y + (enemyPlatform.levelNumber * 17));
                     tempRotValue = Vector2.Normalize(tempPosition - new Vector2(300, 300));
 
-                    Bullet[bulletSpawnIndex].Setup(tempPosition.X, tempPosition.Y, tempRotValue, 5, 50);//need target direction
+                    Bullet[bulletSpawnIndex].Setup(tempPosition.X, tempPosition.Y, tempRotValue, 5, 50, false);//need target direction
                     bulletSpawnIndex += 1;
 
                     //reset bullet index if they are too high
