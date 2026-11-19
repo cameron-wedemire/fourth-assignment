@@ -135,6 +135,20 @@ namespace MohawkGame2D
                 }
             }
 
+            //deside offset amount for platform guns on level number.. note this area needs to be redone whenever the platform scale gets changed in the code as fixing that would not be worth the lines of code
+            if (enemyPlatform.levelNumber == 1)
+            {
+                offsetByLevel = new Vector2(30, 0);
+            }
+            else if (enemyPlatform.levelNumber == 3)
+            {
+                offsetByLevel = new Vector2(51, 51);
+            }
+            else
+            {
+                offsetByLevel = new Vector2(0, 0);
+            }
+
             //move all the bullets
             for (int i = 0; i < Bullet.Length; i++)
             {
@@ -146,12 +160,11 @@ namespace MohawkGame2D
                     //checks if it hits its target
                     if (Bullet[i].isPlayerBullet == false)
                     {
-                        //Bullet[i].hitTargetCheck(new Vector2(300,300));
-                        Bullet[i].hitTargetCheck(new Vector2(300, 300), 60, character.playerHP);
+                        Bullet[i].hitTargetCheck(new Vector2(300, 300), new Vector2(0, 0), 60, character.playerHP);
                         //reset bullet and damage player if it has hit
                         if (Bullet[i].hasHitTarget == true)
                         {
-                            character.playerHP -= 3;//balence later
+                            character.playerHP -= 3;
                             Bullet[i].bulletLifeTime = 0;
                             character.hasBeenHitThisTurn = true;
                             Bullet[i].hasHitTarget = false;
@@ -159,11 +172,52 @@ namespace MohawkGame2D
                     }
                     else
                     {
-                        //Bullet[i].hitTargetCheck();
+                        //NOTE NEED TO FIX HIT RADIUS OF PLATFORMS
+
+                        //check each platform
+                        //check missile hub platform
+                        Bullet[i].hitTargetCheck(enemyPlatform.position, new Vector2(0, 0), 50, enemyPlatform.missileTurretHp);
                         //reset bullet and damage hit platform if it hit
                         if (Bullet[i].hasHitTarget == true)
                         {
-                            character.playerHP -= 3;//balence later
+                            enemyPlatform.missileTurretHp -= 3;
+                            Bullet[i].bulletLifeTime = 0;
+                            Bullet[i].hasHitTarget = false;
+                        }
+
+                        //check gun platform 1
+                        Bullet[i].hitTargetCheck(enemyPlatform.position, new Vector2(-offsetByLevel.X, -offsetByLevel.Y), 25, enemyPlatform.gun1Hp);
+                        //reset bullet and damage hit platform if it hit
+                        if (Bullet[i].hasHitTarget == true)
+                        {
+                            enemyPlatform.gun1Hp -= 3;
+                            Bullet[i].bulletLifeTime = 0;
+                            Bullet[i].hasHitTarget = false;
+                        }
+                        //check gun platform 2
+                        Bullet[i].hitTargetCheck(enemyPlatform.position, new Vector2(offsetByLevel.X, -offsetByLevel.Y), 25, enemyPlatform.gun2Hp);
+                        //reset bullet and damage hit platform if it hit
+                        if (Bullet[i].hasHitTarget == true)
+                        {
+                            enemyPlatform.gun2Hp -= 3;
+                            Bullet[i].bulletLifeTime = 0;
+                            Bullet[i].hasHitTarget = false;
+                        }
+                        //check gun platform 3
+                        Bullet[i].hitTargetCheck(enemyPlatform.position, new Vector2(-offsetByLevel.X, offsetByLevel.Y), 25, enemyPlatform.gun3Hp);
+                        //reset bullet and damage hit platform if it hit
+                        if (Bullet[i].hasHitTarget == true)
+                        {
+                            enemyPlatform.gun3Hp -= 3;
+                            Bullet[i].bulletLifeTime = 0;
+                            Bullet[i].hasHitTarget = false;
+                        }
+                        //check gun platform 4
+                        Bullet[i].hitTargetCheck(enemyPlatform.position, new Vector2(offsetByLevel.X, offsetByLevel.Y), 25, enemyPlatform.gun4Hp);
+                        //reset bullet and damage hit platform if it hit
+                        if (Bullet[i].hasHitTarget == true)
+                        {
+                            enemyPlatform.gun4Hp -= 3;
                             Bullet[i].bulletLifeTime = 0;
                             Bullet[i].hasHitTarget = false;
                         }
@@ -184,7 +238,7 @@ namespace MohawkGame2D
         {
             //checks if turrets exist and then uses cooldown values, not nested as that would use more lines of code with else if statements
             //fire platform missile if it exists
-            if (enemyPlatform.missileTurretHp != 0)
+            if (enemyPlatform.missileTurretHp > 0)
             {
                 if (platformMissileCooldown == 0)
                 {
@@ -203,23 +257,13 @@ namespace MohawkGame2D
                 }
             }
 
-            //deside offset amounts based on level number.. note this area needs to be redone whenever the platform scale gets changed in the code as fixing that would not be worth the lines of code
-            if (enemyPlatform.levelNumber == 1)
-            {
-                offsetByLevel = new Vector2(30, 0);
-            }
-            if (enemyPlatform.levelNumber == 3)
-            {
-                offsetByLevel = new Vector2(51, 51);
-            }
-            Console.WriteLine(offsetByLevel);
+            //the offset amount used in this area is desided before the bullet move function in the main update area
 
             //fire platform gun 1 if it exists
-            if (enemyPlatform.gun1Hp != 0)
+            if (enemyPlatform.gun1Hp > 0)
             {
                 if (platformGunCooldown1 == 0)
                 {
-                    //tempPosition = new Vector2(enemyPlatform.position.X + 10 + ((enemyPlatform.levelNumber - 1) * 17), enemyPlatform.position.Y + ((enemyPlatform.levelNumber - 1) * 17));
                     platformGunTurretsPositionAndGunSpawn(new Vector2(-offsetByLevel.X, -offsetByLevel.Y));
                 }
 
@@ -231,11 +275,10 @@ namespace MohawkGame2D
             }
 
             //fire platform gun 2 if it exists
-            if (enemyPlatform.gun2Hp != 0)
+            if (enemyPlatform.gun2Hp > 0)
             {
                 if (platformGunCooldown2 == 0)
                 {
-                    //tempPosition = new Vector2(enemyPlatform.position.X - 10 - (enemyPlatform.levelNumber * 17), enemyPlatform.position.Y + (enemyPlatform.levelNumber * 17));
                     platformGunTurretsPositionAndGunSpawn(new Vector2(offsetByLevel.X, -offsetByLevel.Y));
                 }
 
@@ -243,6 +286,36 @@ namespace MohawkGame2D
                 if (platformGunCooldown2 > 50)
                 {
                     platformGunCooldown2 = 0;
+                }
+            }
+
+            //fire platform gun 3 if it exists
+            if (enemyPlatform.gun3Hp > 0)
+            {
+                if (platformGunCooldown3 == 0)
+                {
+                    platformGunTurretsPositionAndGunSpawn(new Vector2(-offsetByLevel.X, offsetByLevel.Y));
+                }
+
+                platformGunCooldown3 += 1;
+                if (platformGunCooldown3 > 50)
+                {
+                    platformGunCooldown3 = 0;
+                }
+            }
+
+            //fire platform gun 4 if it exists
+            if (enemyPlatform.gun4Hp > 0)
+            {
+                if (platformGunCooldown4 == 0)
+                {
+                    platformGunTurretsPositionAndGunSpawn(new Vector2(offsetByLevel.X, offsetByLevel.Y));
+                }
+
+                platformGunCooldown4 += 1;
+                if (platformGunCooldown4 > 50)
+                {
+                    platformGunCooldown4 = 0;
                 }
             }
         }

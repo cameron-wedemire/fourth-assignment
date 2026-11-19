@@ -134,6 +134,16 @@ public class Player
 
             Graphics.Rotation = this.playerTurretRotation;
             Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), new Vector2(64, 0), new Vector2(64, 64), new Vector2(32, 32));
+
+            //draws player hp at the bottom left of the screen
+            Draw.SetFillColor(250, 5, 0);
+            Draw.SetLineColor(50, 100, 0);
+            Draw.SetLineSize(3);
+
+            Draw.Rectangle(0, Window.Height - 50, 100, 50);
+            Text.Draw("HP:", 10, Window.Height - 35);
+            
+            Text.Draw($"{this.playerHP}", 60, Window.Height - 35);
         }
     }
     public void CapPlayerSpeed() //PlayerSpeedRatio

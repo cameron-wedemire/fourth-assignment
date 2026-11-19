@@ -12,8 +12,6 @@ public class Platform
     Texture2D platformGraphics = Graphics.LoadTexture("../../../../assets/graphics/64x64 sem1 E120 a4 sprite sheet -p2 enemy sprites.png");
 
     //variables
-    //platformType 1=gun, 2=missile
-    int platformType;
     public int levelNumber;
 
     //if level changed this update it will state it for the next update
@@ -31,8 +29,8 @@ public class Platform
     public int gun4Hp;
 
     //will fine toon later this is temp
-    int missileTurretMaxHp = 100;
-    int gunTurretMaxHp = 100;
+    int missileTurretMaxHp = 25;
+    int gunTurretMaxHp = 15;
     int maxLevel = 3; //i think its 3, might be diff so fix later
 
     public void Setup(float spawnLocationX, float spawnLocationY)
@@ -49,7 +47,7 @@ public class Platform
         this.gun3Hp = 0;
         this.gun4Hp = 0;
 
-        this.levelNumber = 2;
+        this.levelNumber = 0;
     }
 
     public void Update(float speedX, float speedY)
@@ -68,8 +66,8 @@ public class Platform
                 this.gun2Hp = gunTurretMaxHp;
             }
 
-            platformDraw(-10, 0, 0, 1, 3, -45); //gun 1
-            platformDraw(10, 0, 0, 1, 3, 135); //gun 2
+            platformDraw(-10, 0, 1, 3, -45, this.gun1Hp); //gun 1
+            platformDraw(10, 0, 1, 3, 135, this.gun2Hp); //gun 2
         }
 
 
@@ -83,7 +81,7 @@ public class Platform
                 
             }
 
-            platformDraw(0, 0, 0, 0, 3, 0);
+            platformDraw(0, 0, 0, 3, 0, this.missileTurretHp);
         }
 
 
@@ -95,26 +93,38 @@ public class Platform
             {
                 this.missileTurretHp = missileTurretMaxHp;
                 this.gun1Hp = gunTurretMaxHp; //gun 1
-                this.gun2Hp = gunTurretMaxHp; //gun 1
-                this.gun3Hp = gunTurretMaxHp; //gun 1
-                this.gun4Hp = gunTurretMaxHp; //gun 1
+                this.gun2Hp = gunTurretMaxHp; //gun 2
+                this.gun3Hp = gunTurretMaxHp; //gun 3
+                this.gun4Hp = gunTurretMaxHp; //gun 4
             }
 
             //draw gun platforms
-            platformDraw(-17, -17, 0, 1, 3, 0);
-            platformDraw(17, -17, 0, 1, 3, 90);
-            platformDraw(17, 17, 0, 1, 3, 180);
-            platformDraw(-17, 17, 0, 1, 3, 270);
+            platformDraw(-17, -17, 1, 3, 0, this.gun1Hp);
+            platformDraw(17, -17, 1, 3, 90, this.gun2Hp);
+            platformDraw(17, 17, 1, 3, 180, this.gun3Hp);
+            platformDraw(-17, 17, 1, 3, 270, this.gun4Hp);
             
             //draw missile platform
-            platformDraw(0, 0, 0, 0, 3, 0);
+            platformDraw(0, 0, 0, 3, 0, this.missileTurretHp);
+        }
+
+
+        //debug level changer
+        if (Input.IsKeyboardKeyDown(KeyboardKey.H))
+        {
+            this.missileTurretHp = 0;
+            this.gun1Hp = 0; //gun 1
+            this.gun2Hp = 0; //gun 2
+            this.gun3Hp = 0; //gun 3
+            this.gun4Hp = 0; //gun 4
         }
 
         //change level number if all turrets are at 0 HP and change updateThisRoundTrueFalse = true, otherwise set updateThisRoundTrueFalse = false so it doesnt constantly give turrets hp
-        if ((this.missileTurretHp == 0) && (this.gun1Hp == 0) && (this.gun2Hp == 0) && (this.gun3Hp == 0) && (this.gun4Hp == 0) && (levelNumber < maxLevel))
+        if ((this.missileTurretHp <= 0) && (this.gun1Hp <= 0) && (this.gun2Hp <= 0) && (this.gun3Hp <= 0) && (this.gun4Hp <= 0) && (levelNumber < maxLevel))
         {
             levelNumber += 1;
             updateThisRoundTrueFalse = true;
+            Console.WriteLine("{0} {1}", "level # =", levelNumber);
         }
         else
         {
@@ -132,18 +142,28 @@ public class Platform
         Graphics.Rotation = RotToPlayerFloat;
     }
 
-    public void platformDraw(float offsetCenterX, float offsetCenterY, int spriteLocationX, int spriteLocationY, float platformScale, float platformRotation)
+    public void platformDraw(float offsetCenterX, float offsetCenterY, int spriteLocationY, float platformScale, float platformRotation, int platformHP)
     {
         //need to make them decide if they are dead or not (hp <= 0) later
 
         //draw the platform
         Graphics.Scale = platformScale;
         Graphics.Rotation = platformRotation;
-        Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(spriteLocationX * 64, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32, 32));
+        if (platformHP > 0)
+        {
+            Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(0, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32, 32));
+        }
+        else
+        {
+            Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(64, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32, 32));
+        }
 
         //draw turret ontop of the platform
-        turretAngleFinder(offsetCenterX * platformScale, offsetCenterY * platformScale);
-        Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(128, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32, 32));
+        if (platformHP > 0)
+        {
+            turretAngleFinder(offsetCenterX * platformScale, offsetCenterY * platformScale);
+            Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(128, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32, 32));
+        }
     }
 }
 

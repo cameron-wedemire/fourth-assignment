@@ -57,10 +57,10 @@ public class Bullet
         Graphics.DrawSubset(playerAndMunitionGraphics, this.position, new Vector2(64, 64), new Vector2(64, 64), new Vector2(32, 32));
     }
 
-    public void hitTargetCheck(Vector2 positionOfTarget, float hitRadius, int targetHP)
+    public void hitTargetCheck(Vector2 positionOfTarget, Vector2 offset, float hitRadius, int targetHP)
     {
         //float distanceToTarget = (positionOfTarget.X - this.position.X) + (positionOfTarget.Y - this.position.Y);
-        float distanceToTarget = Math.Abs(positionOfTarget.X - this.position.X) + Math.Abs(positionOfTarget.Y - this.position.Y);
+        float distanceToTarget = Math.Abs((positionOfTarget.X + offset.X) - this.position.X) + Math.Abs((positionOfTarget.Y + offset.Y) - this.position.Y);
         if ((distanceToTarget < hitRadius) && (targetHP != 0))
         {
             this.hasHitTarget = true;
