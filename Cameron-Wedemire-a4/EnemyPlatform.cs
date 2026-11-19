@@ -49,7 +49,7 @@ public class Platform
         this.gun3Hp = 0;
         this.gun4Hp = 0;
 
-        this.levelNumber = 1;
+        this.levelNumber = 2;
     }
 
     public void Update(float speedX, float speedY)

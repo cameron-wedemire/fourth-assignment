@@ -36,6 +36,7 @@ namespace MohawkGame2D
         //for platform bullet spawn
         Vector2 tempRotValue;
         Vector2 tempPosition;
+        Vector2 offsetByLevel;
 
         //quick change for bullet and missile numbers so the index reset funciton at the bottom of the main update area doesnt break
         int numberOfBullets = 5;
@@ -201,55 +202,68 @@ namespace MohawkGame2D
                     platformMissileCooldown = 0;
                 }
             }
-            
+
+            //deside offset amounts based on level number.. note this area needs to be redone whenever the platform scale gets changed in the code as fixing that would not be worth the lines of code
+            if (enemyPlatform.levelNumber == 1)
+            {
+                offsetByLevel = new Vector2(30, 0);
+            }
+            if (enemyPlatform.levelNumber == 3)
+            {
+                offsetByLevel = new Vector2(51, 51);
+            }
+            Console.WriteLine(offsetByLevel);
+
             //fire platform gun 1 if it exists
             if (enemyPlatform.gun1Hp != 0)
             {
                 if (platformGunCooldown1 == 0)
                 {
-                    tempPosition = new Vector2(enemyPlatform.position.X + 10 + ((enemyPlatform.levelNumber-1) * 17), enemyPlatform.position.Y + ((enemyPlatform.levelNumber-1) * 17));
-                    tempRotValue = Vector2.Normalize(tempPosition - new Vector2(300, 300));
-
-                    Bullet[bulletSpawnIndex].Setup(tempPosition.X, tempPosition.Y, tempRotValue, 5, 50, false);//need target direction
-                    bulletSpawnIndex += 1;
-
-                    //reset bullet index if they are too high
-                    if (bulletSpawnIndex >= numberOfBullets)
-                    {
-                        bulletSpawnIndex = 0;
-                    }
+                    //tempPosition = new Vector2(enemyPlatform.position.X + 10 + ((enemyPlatform.levelNumber - 1) * 17), enemyPlatform.position.Y + ((enemyPlatform.levelNumber - 1) * 17));
+                    platformGunTurretsPositionAndGunSpawn(new Vector2(-offsetByLevel.X, -offsetByLevel.Y));
                 }
+
                 platformGunCooldown1 += 1;
                 if (platformGunCooldown1 > 50)
                 {
                     platformGunCooldown1 = 0;
                 }
             }
-            
+
             //fire platform gun 2 if it exists
             if (enemyPlatform.gun2Hp != 0)
             {
                 if (platformGunCooldown2 == 0)
                 {
-                    tempPosition = new Vector2(enemyPlatform.position.X - 10 - (enemyPlatform.levelNumber * 17), enemyPlatform.position.Y + (enemyPlatform.levelNumber * 17));
-                    tempRotValue = Vector2.Normalize(tempPosition - new Vector2(300, 300));
-
-                    Bullet[bulletSpawnIndex].Setup(tempPosition.X, tempPosition.Y, tempRotValue, 5, 50, false);//need target direction
-                    bulletSpawnIndex += 1;
-
-                    //reset bullet index if they are too high
-                    if (bulletSpawnIndex >= numberOfBullets)
-                    {
-                        bulletSpawnIndex = 0;
-                    }
+                    //tempPosition = new Vector2(enemyPlatform.position.X - 10 - (enemyPlatform.levelNumber * 17), enemyPlatform.position.Y + (enemyPlatform.levelNumber * 17));
+                    platformGunTurretsPositionAndGunSpawn(new Vector2(offsetByLevel.X, -offsetByLevel.Y));
                 }
+
                 platformGunCooldown2 += 1;
                 if (platformGunCooldown2 > 50)
                 {
                     platformGunCooldown2 = 0;
                 }
             }
-            
+        }
+
+        //this function is because it is the same thing for every gun platform unlike the code in the funciton above
+        public void platformGunTurretsPositionAndGunSpawn(Vector2 offsetAmount)
+        {
+            //tempPosition = new Vector2(enemyPlatform.position.X - 10 - (enemyPlatform.levelNumber * 17), enemyPlatform.position.Y + (enemyPlatform.levelNumber * 17));
+            //tempRotValue = Vector2.Normalize(tempPosition - new Vector2(300, 300));
+
+            //trying to fix above comment
+            tempPosition = new Vector2(enemyPlatform.position.X + offsetAmount.X, enemyPlatform.position.Y + offsetAmount.Y);
+            tempRotValue = Vector2.Normalize(tempPosition - new Vector2(300, 300));
+
+            Bullet[bulletSpawnIndex].Setup(tempPosition.X, tempPosition.Y, tempRotValue, 5, 40, false);//need target direction
+            bulletSpawnIndex += 1;
+            //reset bullet index if they are too high
+            if (bulletSpawnIndex >= numberOfBullets)
+            {
+                bulletSpawnIndex = 0;
+            }
         }
     }
 }
@@ -257,12 +271,7 @@ namespace MohawkGame2D
 //ToDo:
 //fix public variables so only those that need to be public are public
 //add the missile dot thing to the position of the platform
-//if you have enough time try to make a loop function that also teleports the bullets? either that or make a homing beacon to show you the direction to the enemy base
 //if you have enough time try making the turrets not rotate through their own platform group
 
-//give the enemies and player timers for weapon fire that tell it when it can fire (weapon cooldowns, maybe have the guns fire in 3 round bursts? for 3 round bursts you would need 6 bullets per gun..)
-    //give the bullet class an index for which bullets have been fired
-
 //things i might change;
-//maybe turn the player aiming into mouse control instead of Q/E as I now have code for the enemy turrets that use vectors so it would be easier to impliment now
 //impliment window.width and height more
