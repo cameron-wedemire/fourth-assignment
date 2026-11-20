@@ -104,7 +104,7 @@ public class Player
             CapPlayerSpeed();
         }
 
-        //player draw
+        //deside how to draw the player (as in if they are being hit or if they are dead they will be inverted color)
         Graphics.Scale = 2;
         Graphics.Rotation = this.playerRotation;
 
@@ -142,6 +142,12 @@ public class Player
             Text.Draw("HP:", 10, Window.Height - 35);
             
             Text.Draw($"{this.playerHP}", 60, Window.Height - 35);
+        }
+        else
+        {
+            //draw game over screen if you die
+            Text.Color = Color.Red;
+            Text.Draw("GAME OVER \n \n \n \n YOU LOSE", 225, 220);
         }
     }
     public void CapPlayerSpeed()

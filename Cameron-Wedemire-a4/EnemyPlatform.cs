@@ -109,7 +109,7 @@ public class Platform
                 
             }
 
-            platformDraw(this.position, 0, 0, 0, 3, 0, this.missileTurretHp, missileTurretHit);
+            platformDraw(this.position, 0, 0, 0, 3, 0, this.missileTurretHp, missileTurretHit); //missile
 
             //draw old platform so it doesnt dissapear on death BUT only for the next level as keepking all would cause lag if more levels are added
             platformDraw(lastPlatformCenter, - 10, 0, 1, 3, -45, 0, true); //old gun 1
@@ -131,16 +131,32 @@ public class Platform
             }
 
             //draw gun platforms
-            platformDraw(this.position , - 17, -17, 1, 3, 0, this.gun1Hp, gun1TurretHit);
-            platformDraw(this.position, 17, -17, 1, 3, 90, this.gun2Hp, gun2TurretHit);
-            platformDraw(this.position, - 17, 17, 1, 3, 180, this.gun3Hp, gun3TurretHit);
-            platformDraw(this.position, 17, 17, 1, 3, 270, this.gun4Hp, gun4TurretHit);
+            platformDraw(this.position , - 17, -17, 1, 3, 0, this.gun1Hp, gun1TurretHit); //gun 1
+            platformDraw(this.position, 17, -17, 1, 3, 90, this.gun2Hp, gun2TurretHit);   //gun 2
+            platformDraw(this.position, - 17, 17, 1, 3, 180, this.gun3Hp, gun3TurretHit); //gun 3
+            platformDraw(this.position, 17, 17, 1, 3, 270, this.gun4Hp, gun4TurretHit);   //gun 4
             
             //draw missile platform
-            platformDraw(this.position, 0, 0, 0, 3, 0, this.missileTurretHp, missileTurretHit);
+            platformDraw(this.position, 0, 0, 0, 3, 0, this.missileTurretHp, missileTurretHit); //missile
 
             //draw old platform so it doesnt dissapear on death BUT only for the next level as keepking all would cause lag if more levels are added
             platformDraw(lastPlatformCenter, 0, 0, 0, 3, 0, 0, true);
+        }
+
+        //end game screen
+        if (levelNumber > maxLevel)
+        {
+            //draw old platform so it doesnt dissapear on death BUT only for the next level as keepking all would cause lag if more levels are added
+            platformDraw(lastPlatformCenter, -17, -17, 1, 3, 0, 0, true); //old gun 1
+            platformDraw(lastPlatformCenter, 17, -17, 1, 3, 90, 0, true); //old gun 2
+            platformDraw(lastPlatformCenter, -17, 17, 1, 3, 180, 0, true);//old gun 3
+            platformDraw(lastPlatformCenter, 17, 17, 1, 3, 270, 0, true); //old gun 4
+
+            platformDraw(lastPlatformCenter, 0, 0, 0, 3, 0, 0, true); //old missile
+
+            //end game text
+            Text.Color = Color.Red;
+            Text.Draw("GAME OVER \n \n \n \n YOU WIN", 225, 220);
         }
 
         //reset the turrets hit check so it flashes damage instead of being perma damaged
@@ -175,7 +191,7 @@ public class Platform
         }
 
         //change level number if all turrets are at 0 HP and change updateThisRoundTrueFalse = true, otherwise set updateThisRoundTrueFalse = false so it doesnt constantly give turrets hp
-        if ((this.missileTurretHp <= 0) && (this.gun1Hp <= 0) && (this.gun2Hp <= 0) && (this.gun3Hp <= 0) && (this.gun4Hp <= 0) && (levelNumber < maxLevel))
+        if ((this.missileTurretHp <= 0) && (this.gun1Hp <= 0) && (this.gun2Hp <= 0) && (this.gun3Hp <= 0) && (this.gun4Hp <= 0) && (levelNumber <= maxLevel))
         {
             levelNumber += 1;
             updateThisRoundTrueFalse = true;
