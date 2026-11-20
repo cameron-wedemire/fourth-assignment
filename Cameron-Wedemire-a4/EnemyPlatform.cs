@@ -22,6 +22,14 @@ public class Platform
     Vector2 RotToPlayerVector;
     float RotToPlayerFloat;
     Vector2 playerLocationFalse = new Vector2(300, 300); //just for calculations that need Vector2s
+    
+    float platformNotificationBlinkTimer;
+    Vector2 platformNotificationBlinkLocation;
+
+    Vector2 newPlatformCenter;
+    Vector2 lastPlatformCenter;
+
+    //turret variables
     public int missileTurretHp;
     public bool missileTurretHit;
     public int gun1Hp;
@@ -34,10 +42,11 @@ public class Platform
     public bool gun4TurretHit;
     int timeSinceHit;
 
-    //will fine toon later this is temp
+    //constant reference points
     int missileTurretMaxHp = 25;
     int gunTurretMaxHp = 15;
-    int maxLevel = 3; //i think its 3, might be diff so fix later
+    
+    int maxLevel = 3; //desides when to show the end screen.. not implimented yet
 
     public void Setup(float spawnLocationX, float spawnLocationY)
     {
@@ -107,8 +116,8 @@ public class Platform
             //draw gun platforms
             platformDraw(-17, -17, 1, 3, 0, this.gun1Hp, gun1TurretHit);
             platformDraw(17, -17, 1, 3, 90, this.gun2Hp, gun2TurretHit);
-            platformDraw(17, 17, 1, 3, 180, this.gun3Hp, gun3TurretHit);
-            platformDraw(-17, 17, 1, 3, 270, this.gun4Hp, gun4TurretHit);
+            platformDraw(-17, 17, 1, 3, 180, this.gun3Hp, gun3TurretHit);
+            platformDraw(17, 17, 1, 3, 270, this.gun4Hp, gun4TurretHit);
             
             //draw missile platform
             platformDraw(0, 0, 0, 3, 0, this.missileTurretHp, missileTurretHit);
@@ -155,6 +164,58 @@ public class Platform
         else
         {
             updateThisRoundTrueFalse = false;
+        }
+
+        //platformNotificationBlinker is for telling the player where the platform is incase they fly off into the void and get lost
+        if ((this.position.X+15 > 0) && (this.position.X-15 < Window.Width) && (this.position.Y+15 > 0) && (this.position.Y-15 < Window.Height))
+        {
+            platformNotificationBlinkLocation.X = -50;
+            platformNotificationBlinkLocation.Y = -50;
+
+        }
+        else
+        {
+            //keep notification's X on screen
+            if (this.position.X > Window.Width)
+            {
+                platformNotificationBlinkLocation.X = Window.Width - 5;
+            }
+            else if (this.position.X < 0)
+            {
+                platformNotificationBlinkLocation.X = 5;
+            }
+            else
+            {
+                platformNotificationBlinkLocation.X = this.position.X;
+            }
+
+            //keep notification's Y on screen
+            if (this.position.Y > Window.Height)
+            {
+                platformNotificationBlinkLocation.Y = Window.Height - 5;
+            }
+            else if (this.position.Y < 0)
+            {
+                platformNotificationBlinkLocation.Y = 5;
+            }
+            else
+            {
+                platformNotificationBlinkLocation.Y = this.position.Y;
+            }
+        }
+
+        //timer to make the notification blink in and out
+        platformNotificationBlinkTimer += 0.1f;
+
+        if (platformNotificationBlinkTimer > 5)
+        {
+            platformNotificationBlinkTimer = 0;
+        }
+        if (platformNotificationBlinkTimer < 1)
+        {
+            Draw.SetLineColor(255, 0, 50);
+            Draw.SetFillColor(0, 100, 200);
+            Draw.Circle(platformNotificationBlinkLocation, 10);
         }
     }
 
