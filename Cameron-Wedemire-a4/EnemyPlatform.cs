@@ -254,7 +254,7 @@ public class Platform
         {
             Draw.SetLineColor(255, 0, 50);
             Draw.SetFillColor(0, 100, 200);
-            Draw.Circle(platformNotificationBlinkLocation, 10);
+            Draw.Circle(platformNotificationBlinkLocation, 15);
         }
     }
 
