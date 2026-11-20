@@ -1,9 +1,5 @@
-﻿using MohawkGame2D;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Numerics;
-using System.Text;
-using System.Threading.Channels;
 
 namespace MohawkGame2D;
 
