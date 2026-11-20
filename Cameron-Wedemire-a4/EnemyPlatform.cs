@@ -32,6 +32,7 @@ public class Platform
     public bool gun3TurretHit;
     public int gun4Hp;
     public bool gun4TurretHit;
+    int timeSinceHit;
 
     //will fine toon later this is temp
     int missileTurretMaxHp = 25;
@@ -71,8 +72,8 @@ public class Platform
                 this.gun2Hp = gunTurretMaxHp;
             }
 
-            platformDraw(-10, 0, 1, 3, -45, this.gun1Hp); //gun 1
-            platformDraw(10, 0, 1, 3, 135, this.gun2Hp); //gun 2
+            platformDraw(-10, 0, 1, 3, -45, this.gun1Hp, gun1TurretHit); //gun 1
+            platformDraw(10, 0, 1, 3, 135, this.gun2Hp, gun2TurretHit); //gun 2
         }
 
 
@@ -86,7 +87,7 @@ public class Platform
                 
             }
 
-            platformDraw(0, 0, 0, 3, 0, this.missileTurretHp);
+            platformDraw(0, 0, 0, 3, 0, this.missileTurretHp, missileTurretHit);
         }
 
 
@@ -104,13 +105,34 @@ public class Platform
             }
 
             //draw gun platforms
-            platformDraw(-17, -17, 1, 3, 0, this.gun1Hp);
-            platformDraw(17, -17, 1, 3, 90, this.gun2Hp);
-            platformDraw(17, 17, 1, 3, 180, this.gun3Hp);
-            platformDraw(-17, 17, 1, 3, 270, this.gun4Hp);
+            platformDraw(-17, -17, 1, 3, 0, this.gun1Hp, gun1TurretHit);
+            platformDraw(17, -17, 1, 3, 90, this.gun2Hp, gun2TurretHit);
+            platformDraw(17, 17, 1, 3, 180, this.gun3Hp, gun3TurretHit);
+            platformDraw(-17, 17, 1, 3, 270, this.gun4Hp, gun4TurretHit);
             
             //draw missile platform
-            platformDraw(0, 0, 0, 3, 0, this.missileTurretHp);
+            platformDraw(0, 0, 0, 3, 0, this.missileTurretHp, missileTurretHit);
+        }
+
+        //reset the turrets hit check so it flashes damage instead of being perma damaged
+        if ((timeSinceHit < 0) && ((missileTurretHit == true) || (gun1TurretHit == true) || (gun2TurretHit == true) || (gun3TurretHit == true) || (gun4TurretHit == true)))
+        {
+            //this is sest to 5 as that will be decreased to 0 before the next player bullet is shot
+            timeSinceHit = 5;
+        }
+
+        if (timeSinceHit > 0)
+        {
+            timeSinceHit -= 1;
+        }
+        else
+        {
+            missileTurretHit = false;
+            gun1TurretHit = false;
+            gun2TurretHit = false;
+            gun3TurretHit = false;
+            gun4TurretHit = false;
+            timeSinceHit = -1;
         }
 
         //debug level changer
@@ -146,14 +168,14 @@ public class Platform
         Graphics.Rotation = RotToPlayerFloat;
     }
 
-    public void platformDraw(float offsetCenterX, float offsetCenterY, int spriteLocationY, float platformScale, float platformRotation, int platformHP)
+    public void platformDraw(float offsetCenterX, float offsetCenterY, int spriteLocationY, float platformScale, float platformRotation, int platformHP, bool platformHitSinceLastCheck)
     {
         //need to make them decide if they are dead or not (hp <= 0) later
 
         //draw the platform
         Graphics.Scale = platformScale;
         Graphics.Rotation = platformRotation;
-        if (platformHP > 0)
+        if ((platformHP > 0) && (platformHitSinceLastCheck == false))
         {
             Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(0, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32, 32));
         }

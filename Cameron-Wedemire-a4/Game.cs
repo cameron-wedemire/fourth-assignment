@@ -182,6 +182,7 @@ namespace MohawkGame2D
                         {
                             enemyPlatform.missileTurretHp -= 3;
                             Bullet[i].bulletLifeTime = 0;
+                            enemyPlatform.missileTurretHit = true;
                             Bullet[i].hasHitTarget = false;
                         }
 
@@ -192,6 +193,7 @@ namespace MohawkGame2D
                         {
                             enemyPlatform.gun1Hp -= 3;
                             Bullet[i].bulletLifeTime = 0;
+                            enemyPlatform.gun1TurretHit = true;
                             Bullet[i].hasHitTarget = false;
                         }
                         //check gun platform 2
@@ -201,6 +203,7 @@ namespace MohawkGame2D
                         {
                             enemyPlatform.gun2Hp -= 3;
                             Bullet[i].bulletLifeTime = 0;
+                            enemyPlatform.gun2TurretHit = true;
                             Bullet[i].hasHitTarget = false;
                         }
                         //check gun platform 3
@@ -210,6 +213,7 @@ namespace MohawkGame2D
                         {
                             enemyPlatform.gun3Hp -= 3;
                             Bullet[i].bulletLifeTime = 0;
+                            enemyPlatform.gun3TurretHit = true;
                             Bullet[i].hasHitTarget = false;
                         }
                         //check gun platform 4
@@ -219,6 +223,7 @@ namespace MohawkGame2D
                         {
                             enemyPlatform.gun4Hp -= 3;
                             Bullet[i].bulletLifeTime = 0;
+                            enemyPlatform.gun4TurretHit = true;
                             Bullet[i].hasHitTarget = false;
                         }
                     }
@@ -344,7 +349,7 @@ namespace MohawkGame2D
 //ToDo:
 //fix public variables so only those that need to be public are public
 //add the missile dot thing to the position of the platform
-//if you have enough time try making the turrets not rotate through their own platform group
+//if you have enough time try making the turrets not rotate through their own platform group... not gonna do
 
 //things i might change;
 //impliment window.width and height more
