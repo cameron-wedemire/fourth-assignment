@@ -342,4 +342,3 @@ namespace MohawkGame2D
 
 //ToDo:
 //fix public variables so only those that need to be public are public.. also do the same for the this. ones as i think some arnt needed to be that way
-//put game over and game start screens into the platform class area AND make the level number not increase when those are shown

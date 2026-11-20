@@ -39,66 +39,55 @@ public class Player
         //change player speed, after the if statments it will call the cap function that will lower the speed if its too high
         if (this.playerHP > 0)
         {
+            //up/down first then left/right and has nested if statements for the 45 degree rotation so its a bit odd
             if (Input.IsKeyboardKeyDown(KeyboardKey.W))
             {
                 this.playerSpeed.Y -= 1;
-                //Graphics.Rotation = 0;
-
-                //change player Rotation
-                if (this.playerRotation > 0)
+                
+                if (Input.IsKeyboardKeyDown(KeyboardKey.A))
                 {
-                    this.playerRotation -= 45;
+                    this.playerSpeed.X -= 1;
+                    this.playerRotation = -45;
                 }
-                else if (this.playerRotation < 0)
+                else if (Input.IsKeyboardKeyDown(KeyboardKey.D))
                 {
-                    this.playerRotation += 45;
+                    this.playerSpeed.X += 1;
+                    this.playerRotation = 45;
+                }
+                else
+                {
+                    this.playerRotation = 0;
                 }
             }
             else if (Input.IsKeyboardKeyDown(KeyboardKey.S))
             {
-                //Graphics.Rotation = 180;
                 this.playerSpeed.Y += 1;
 
-                //change player Rotation
-                if (this.playerRotation < 0 && this.playerRotation > -180)
+                if (Input.IsKeyboardKeyDown(KeyboardKey.A))
                 {
-                    this.playerRotation -= 45;
+                    this.playerSpeed.X -= 1;
+                    this.playerRotation = -135;
                 }
-                else if (this.playerRotation >= 0 && this.playerRotation < 180)
+                else if (Input.IsKeyboardKeyDown(KeyboardKey.D))
                 {
-                    this.playerRotation += 45;
+                    this.playerSpeed.X += 1;
+                    this.playerRotation = 135;
+                }
+                else
+                {
+                    this.playerRotation = 180;
                 }
             }
-
-            if (Input.IsKeyboardKeyDown(KeyboardKey.A))
+            //if w/s is not pressed but a/d is
+            else if (Input.IsKeyboardKeyDown(KeyboardKey.A))
             {
-                //Graphics.Rotation = -90;
                 this.playerSpeed.X -= 1;
-
-                //change player Rotation
-                if (this.playerRotation > -90)
-                {
-                    this.playerRotation -= 45;
-                }
-                else if (this.playerRotation < -90)
-                {
-                    this.playerRotation += 45;
-                }
+                this.playerRotation = -90;
             }
             else if (Input.IsKeyboardKeyDown(KeyboardKey.D)) //this one is not working right
             {
-                //Graphics.Rotation = 90;
                 this.playerSpeed.X += 1;
-
-                //change player Rotation
-                if (this.playerRotation < 90)
-                {
-                    this.playerRotation += 45;
-                }
-                else if (this.playerRotation > 90)
-                {
-                    this.playerRotation -= 45;
-                }
+                this.playerRotation = 90;
             }
 
             CapPlayerSpeed();
