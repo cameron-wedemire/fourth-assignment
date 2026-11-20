@@ -27,7 +27,7 @@ public class backgroundDust
             this.distanceToPlayer = Math.Abs(300 - position.X) + Math.Abs(300 - position.Y);
 
             dustSize -= 0.1f;
-            //to give impression of player moving the stars in the background will move with the oposite of the player speed.. maybe make those closer to the player move faster than further out ones?
+            //to give impression of player moving the dust in the background will move with the oposite of the player speed.. those closer to the player move faster than further out ones
             position.X -= speedX * (this.distanceToPlayer / 300);
             position.Y -= speedY * (this.distanceToPlayer / 300);
         }
@@ -40,6 +40,7 @@ public class backgroundDust
 
         //draws the star
         Draw.SetLineColor(255, 255, 255);
+        Draw.SetLineSize(1);
         Draw.Line(position.X - dustSize / 2, position.Y - dustSize / 2, position.X + dustSize / 2, position.Y + dustSize / 2);//top left to bottom right
         Draw.Line(position.X, position.Y - dustSize, position.X, position.Y + dustSize);//top to bottom
         Draw.Line(position.X - dustSize / 2, position.Y + dustSize / 2, position.X + dustSize / 2, position.Y - dustSize / 2);//top right to bottom right
