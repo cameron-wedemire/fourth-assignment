@@ -23,10 +23,15 @@ public class Platform
     float RotToPlayerFloat;
     Vector2 playerLocationFalse = new Vector2(300, 300); //just for calculations that need Vector2s
     public int missileTurretHp;
+    public bool missileTurretHit;
     public int gun1Hp;
+    public bool gun1TurretHit;
     public int gun2Hp;
+    public bool gun2TurretHit;
     public int gun3Hp;
+    public bool gun3TurretHit;
     public int gun4Hp;
+    public bool gun4TurretHit;
 
     //will fine toon later this is temp
     int missileTurretMaxHp = 25;
@@ -108,9 +113,8 @@ public class Platform
             platformDraw(0, 0, 0, 3, 0, this.missileTurretHp);
         }
 
-
         //debug level changer
-        if (Input.IsKeyboardKeyDown(KeyboardKey.H))
+        if (Input.IsKeyboardKeyPressed(KeyboardKey.H))
         {
             this.missileTurretHp = 0;
             this.gun1Hp = 0; //gun 1

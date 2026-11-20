@@ -345,7 +345,6 @@ namespace MohawkGame2D
 //fix public variables so only those that need to be public are public
 //add the missile dot thing to the position of the platform
 //if you have enough time try making the turrets not rotate through their own platform group
-//FIX LEVEL SKIPPER
 
 //things i might change;
 //impliment window.width and height more
