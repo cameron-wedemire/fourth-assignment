@@ -81,7 +81,7 @@ namespace MohawkGame2D
             }
             character.Setup();
 
-            enemyPlatform.Setup(0, 0);
+            enemyPlatform.Setup();
         }
 
         /// <summary>
@@ -347,7 +347,7 @@ namespace MohawkGame2D
 }
 
 //ToDo:
-//fix public variables so only those that need to be public are public
+//fix public variables so only those that need to be public are public.. also do the same for the this. ones as i think some arnt needed to be that way
 //if you have enough time try making the turrets not rotate through their own platform group... not gonna do
 
 //things i might change;

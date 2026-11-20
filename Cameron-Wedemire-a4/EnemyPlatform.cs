@@ -18,16 +18,14 @@ public class Platform
     bool updateThisRoundTrueFalse;
 
     public Vector2 position;
-    public float distanceToPlayer;
+    Vector2 lastPlatformCenter;
+    
     Vector2 RotToPlayerVector;
     float RotToPlayerFloat;
     Vector2 playerLocationFalse = new Vector2(300, 300); //just for calculations that need Vector2s
     
     float platformNotificationBlinkTimer;
     Vector2 platformNotificationBlinkLocation;
-
-    Vector2 newPlatformCenter;
-    Vector2 lastPlatformCenter;
 
     //turret variables
     public int missileTurretHp;
@@ -48,12 +46,24 @@ public class Platform
     
     int maxLevel = 3; //desides when to show the end screen.. not implimented yet
 
-    public void Setup(float spawnLocationX, float spawnLocationY)
+    public void Setup()
     {
-        //the reason for spawnFuel is so when starting the game it doesnt spawn all 5 at once, 50 fuel seems to be a good amount
-        this.position.X = spawnLocationX;
-        this.position.Y = spawnLocationY;
-        this.distanceToPlayer = (300 - this.position.X) + (300 - this.position.Y);
+        //find random spawn location OUTSIDE OF SCREEN
+        //find random spawn X
+        float tempLocation = 300;
+        while ((tempLocation + 15 > 0) && (tempLocation - 15 < Window.Width))
+        {
+            tempLocation = Random.Float(-1500, 1500);
+        }
+        this.position.X = tempLocation;
+
+        //find random spawn Y
+        tempLocation = 300;
+        while ((tempLocation + 15 > 0) && (tempLocation - 15 < Window.Height))
+        {
+            tempLocation = Random.Float(-1500, 1500);
+        }
+        this.position.Y = tempLocation;
 
         //this.is alive code to let weapon fire functions work
         this.missileTurretHp = 0;
@@ -70,6 +80,8 @@ public class Platform
         //move the platform oposite of player speed to give appearence of player moving
         this.position.X -= speedX;
         this.position.Y -= speedY;
+        lastPlatformCenter.X -= speedX;
+        lastPlatformCenter.Y -= speedY;
 
         //level 1 visual
         if (levelNumber == 1)
@@ -81,8 +93,8 @@ public class Platform
                 this.gun2Hp = gunTurretMaxHp;
             }
 
-            platformDraw(-10, 0, 1, 3, -45, this.gun1Hp, gun1TurretHit); //gun 1
-            platformDraw(10, 0, 1, 3, 135, this.gun2Hp, gun2TurretHit); //gun 2
+            platformDraw(this.position, -10, 0, 1, 3, -45, this.gun1Hp, gun1TurretHit); //gun 1
+            platformDraw(this.position, 10, 0, 1, 3, 135, this.gun2Hp, gun2TurretHit); //gun 2
         }
 
 
@@ -96,7 +108,11 @@ public class Platform
                 
             }
 
-            platformDraw(0, 0, 0, 3, 0, this.missileTurretHp, missileTurretHit);
+            platformDraw(this.position, 0, 0, 0, 3, 0, this.missileTurretHp, missileTurretHit);
+
+            //draw old platform so it doesnt dissapear on death BUT only for the next level as keepking all would cause lag if more levels are added
+            platformDraw(lastPlatformCenter, - 10, 0, 1, 3, -45, 0, true); //old gun 1
+            platformDraw(lastPlatformCenter, 10, 0, 1, 3, 135, 0, true); //old gun 2
         }
 
 
@@ -114,13 +130,16 @@ public class Platform
             }
 
             //draw gun platforms
-            platformDraw(-17, -17, 1, 3, 0, this.gun1Hp, gun1TurretHit);
-            platformDraw(17, -17, 1, 3, 90, this.gun2Hp, gun2TurretHit);
-            platformDraw(-17, 17, 1, 3, 180, this.gun3Hp, gun3TurretHit);
-            platformDraw(17, 17, 1, 3, 270, this.gun4Hp, gun4TurretHit);
+            platformDraw(this.position , - 17, -17, 1, 3, 0, this.gun1Hp, gun1TurretHit);
+            platformDraw(this.position, 17, -17, 1, 3, 90, this.gun2Hp, gun2TurretHit);
+            platformDraw(this.position, - 17, 17, 1, 3, 180, this.gun3Hp, gun3TurretHit);
+            platformDraw(this.position, 17, 17, 1, 3, 270, this.gun4Hp, gun4TurretHit);
             
             //draw missile platform
-            platformDraw(0, 0, 0, 3, 0, this.missileTurretHp, missileTurretHit);
+            platformDraw(this.position, 0, 0, 0, 3, 0, this.missileTurretHp, missileTurretHit);
+
+            //draw old platform so it doesnt dissapear on death BUT only for the next level as keepking all would cause lag if more levels are added
+            platformDraw(lastPlatformCenter, 0, 0, 0, 3, 0, 0, true);
         }
 
         //reset the turrets hit check so it flashes damage instead of being perma damaged
@@ -160,6 +179,26 @@ public class Platform
             levelNumber += 1;
             updateThisRoundTrueFalse = true;
             Console.WriteLine("{0} {1}", "level # =", levelNumber);
+
+            //set old location Vector2 for visual of the platform player just destroyed
+            lastPlatformCenter = this.position;
+
+            //find new location OUTSIDE OF SCREEN
+            //find random spawn X
+            float tempLocation = 300;
+            while ((tempLocation + 15 > 0) && (tempLocation - 15 < Window.Width))
+            {
+                tempLocation = Random.Float(-1500, 1500);
+            }
+            this.position.X = tempLocation;
+
+            //find random spawn Y
+            tempLocation = 300;
+            while ((tempLocation + 15 > 0) && (tempLocation - 15 < Window.Height))
+            {
+                tempLocation = Random.Float(-1500, 1500);
+            }
+            this.position.Y = tempLocation;
         }
         else
         {
@@ -229,7 +268,7 @@ public class Platform
         Graphics.Rotation = RotToPlayerFloat;
     }
 
-    public void platformDraw(float offsetCenterX, float offsetCenterY, int spriteLocationY, float platformScale, float platformRotation, int platformHP, bool platformHitSinceLastCheck)
+    public void platformDraw(Vector2 centerLocation, float offsetCenterX, float offsetCenterY, int spriteLocationY, float platformScale, float platformRotation, int platformHP, bool platformHitSinceLastCheck)
     {
         //need to make them decide if they are dead or not (hp <= 0) later
 
@@ -238,18 +277,18 @@ public class Platform
         Graphics.Rotation = platformRotation;
         if ((platformHP > 0) && (platformHitSinceLastCheck == false))
         {
-            Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(0, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32, 32));
+            Graphics.DrawSubset(platformGraphics, centerLocation + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(0, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32, 32));
         }
         else
         {
-            Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(64, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32, 32));
+            Graphics.DrawSubset(platformGraphics, centerLocation + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(64, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32, 32));
         }
 
         //draw turret ontop of the platform
         if (platformHP > 0)
         {
             turretAngleFinder(offsetCenterX * platformScale, offsetCenterY * platformScale);
-            Graphics.DrawSubset(platformGraphics, this.position + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(128, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32, 32));
+            Graphics.DrawSubset(platformGraphics, centerLocation + new Vector2(offsetCenterX * platformScale, offsetCenterY * platformScale), new Vector2(128, spriteLocationY * 64), new Vector2(64, 64), new Vector2(32, 32));
         }
     }
 }
