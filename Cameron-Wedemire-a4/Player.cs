@@ -13,7 +13,6 @@ public class Player
     Texture2D playerAndMunitionGraphics = Graphics.LoadTexture("../../../../assets/graphics/64x64 sem1 E120 a4 sprite sheet -p1 player and munitions.png");
 
     // Variables
-    //might need a variable later to state player xy distance from origin so its easier to calculate enemy stuff but that will be a later issue
     public Vector2 playerSpeed;
     public float playerRotation;
     public float playerTurretRotation;
@@ -28,7 +27,6 @@ public class Player
     public void Setup()
     {
         this.playerSpeed = new Vector2(0,0);
-        //this.playerRotation = -90;
         this.playerRotation = 0;
         this.playerTurretRotation = 0;
 
@@ -106,7 +104,7 @@ public class Player
             CapPlayerSpeed();
         }
 
-        //player draw //need to fix diagonal movement
+        //player draw
         Graphics.Scale = 2;
         Graphics.Rotation = this.playerRotation;
 
@@ -124,7 +122,7 @@ public class Player
             
         }
 
-        Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), playerSpriteType, new Vector2(64,64), new Vector2(32, 32)); //graphic starts from top left of the file.. thing to draw, location, fileLocation, file size, offset
+        Graphics.DrawSubset(playerAndMunitionGraphics, new Vector2(300, 300), playerSpriteType, new Vector2(64,64), new Vector2(32, 32));
 
         //draws players turret BUT ONLY IF THE PLAYER IS ALIVE
         if (this.playerHP > 0)
@@ -146,7 +144,7 @@ public class Player
             Text.Draw($"{this.playerHP}", 60, Window.Height - 35);
         }
     }
-    public void CapPlayerSpeed() //PlayerSpeedRatio
+    public void CapPlayerSpeed()
     {
         if (playerSpeed.X != 0 || playerSpeed.Y != 0)
         {
@@ -154,7 +152,6 @@ public class Player
             if (this.playerSpeed.Length() > 15)
             {
                 this.playerSpeed = playerMoveAngle * this.playerMaxSpeed;
-                //Console.WriteLine(this.playerSpeed);
             }
         }
     }

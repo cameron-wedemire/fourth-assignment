@@ -22,7 +22,8 @@ public class Platform
     
     Vector2 RotToPlayerVector;
     float RotToPlayerFloat;
-    Vector2 playerLocationFalse = new Vector2(300, 300); //just for calculations that need Vector2s
+    //just for calculations that need Vector2s
+    Vector2 playerLocationFalse = new Vector2(300, 300); 
     
     float platformNotificationBlinkTimer;
     Vector2 platformNotificationBlinkLocation;
@@ -43,8 +44,8 @@ public class Platform
     //constant reference points
     int missileTurretMaxHp = 25;
     int gunTurretMaxHp = 15;
-    
-    int maxLevel = 3; //desides when to show the end screen.. not implimented yet
+    //desides when to show the end screen.. not implimented yet
+    int maxLevel = 3; 
 
     public void Setup()
     {
@@ -65,7 +66,7 @@ public class Platform
         }
         this.position.Y = tempLocation;
 
-        //this.is alive code to let weapon fire functions work
+        //this.isAlive code to let weapon fire functions work
         this.missileTurretHp = 0;
         this.gun1Hp = 0;
         this.gun2Hp = 0;
@@ -178,6 +179,7 @@ public class Platform
         {
             levelNumber += 1;
             updateThisRoundTrueFalse = true;
+            //kept this for when adding new levels, would have put on screen but I didnt want to clutter the UI too much
             Console.WriteLine("{0} {1}", "level # =", levelNumber);
 
             //set old location Vector2 for visual of the platform player just destroyed
@@ -258,7 +260,7 @@ public class Platform
         }
     }
 
-    public void turretAngleFinder(float offsetCenterX, float offsetCenterY) //later make it so that when its not able to aim at the enemy it goes to an idle angle
+    public void turretAngleFinder(float offsetCenterX, float offsetCenterY)
     {
         //tells the turrets the rotation needed to aim at the player
         this.RotToPlayerVector = Vector2.Normalize(playerLocationFalse - (this.position + new Vector2(offsetCenterX, offsetCenterY)));
@@ -270,8 +272,6 @@ public class Platform
 
     public void platformDraw(Vector2 centerLocation, float offsetCenterX, float offsetCenterY, int spriteLocationY, float platformScale, float platformRotation, int platformHP, bool platformHitSinceLastCheck)
     {
-        //need to make them decide if they are dead or not (hp <= 0) later
-
         //draw the platform
         Graphics.Scale = platformScale;
         Graphics.Rotation = platformRotation;
@@ -292,5 +292,3 @@ public class Platform
         }
     }
 }
-
-//will need to increase levelNumber by 1 everytime all platform HP is at 0, on 1 past max level it will show a thing saying gameover you win

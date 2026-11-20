@@ -16,12 +16,12 @@ namespace MohawkGame2D
         //the player character
         Player character = new Player();
 
-        //munitions, friend and foe in same group but each has its own this.friend number (add later)
+        //munitions, bullets friend and foe in same group but each bullet has its own this.isPlayerBullet bool to select target
         Bullet[] Bullet = new Bullet[5];//array of bullets
         Missile[] Missile = new Missile[5];//array of missiles
         Platform enemyPlatform = new Platform();
 
-        //these give guns and missile launchers a way to know which munition they are to move, each gun turret has 6 bullets and each missile turret has 2 missiles //NOT IMPLIMENTED YET
+        //these give guns and missile launchers a way to know which munition they are to move, each gun turret has 6 bullets and each missile turret has 2 missiles
         public int bulletSpawnIndex = 0;
         public int missileSpawnIndex = 0;
 
@@ -59,7 +59,7 @@ namespace MohawkGame2D
                 //for each element in arrey, create new Bullet
                 Bullet[i] = new Bullet();
                 //setup the munition that was just made
-                Bullet[i].Setup(-50, -50, new Vector2(1, 1), 0, 0, false); //replace the first 3 numbers with the location of the thing that spawned them in later
+                Bullet[i].Setup(-50, -50, new Vector2(1, 1), 0, 0, false);
             }
 
             //iterate over array, to setup each missile
@@ -68,7 +68,7 @@ namespace MohawkGame2D
                 //for each element in arrey, create new Missile
                 Missile[i] = new Missile();
                 //setup the munition that was just made
-                Missile[i].Setup(-50, -50, -21); //replace the numbers with the location of the thing that spawned them in later
+                Missile[i].Setup(-50, -50, -21);
             }
 
             //itterate over array, to setup each dust particle
@@ -172,8 +172,6 @@ namespace MohawkGame2D
                     }
                     else
                     {
-                        //NOTE NEED TO FIX HIT RADIUS OF PLATFORMS
-
                         //check each platform
                         //check missile hub platform
                         Bullet[i].hitTargetCheck(enemyPlatform.position, new Vector2(0, 0), 50, enemyPlatform.missileTurretHp);
@@ -262,8 +260,6 @@ namespace MohawkGame2D
                 }
             }
 
-            //the offset amount used in this area is desided before the bullet move function in the main update area
-
             //fire platform gun 1 if it exists
             if (enemyPlatform.gun1Hp > 0)
             {
@@ -328,14 +324,12 @@ namespace MohawkGame2D
         //this function is because it is the same thing for every gun platform unlike the code in the funciton above
         public void platformGunTurretsPositionAndGunSpawn(Vector2 offsetAmount)
         {
-            //tempPosition = new Vector2(enemyPlatform.position.X - 10 - (enemyPlatform.levelNumber * 17), enemyPlatform.position.Y + (enemyPlatform.levelNumber * 17));
-            //tempRotValue = Vector2.Normalize(tempPosition - new Vector2(300, 300));
-
-            //trying to fix above comment
+            //find the rotation that the turret wants to fire to hit the player, target leading COULD have been added here but ran out of time
             tempPosition = new Vector2(enemyPlatform.position.X + offsetAmount.X, enemyPlatform.position.Y + offsetAmount.Y);
             tempRotValue = Vector2.Normalize(tempPosition - new Vector2(300, 300));
 
-            Bullet[bulletSpawnIndex].Setup(tempPosition.X, tempPosition.Y, tempRotValue, 5, 40, false);//need target direction
+            //spawn the bullet
+            Bullet[bulletSpawnIndex].Setup(tempPosition.X, tempPosition.Y, tempRotValue, 5, 40, false);
             bulletSpawnIndex += 1;
             //reset bullet index if they are too high
             if (bulletSpawnIndex >= numberOfBullets)
@@ -348,7 +342,4 @@ namespace MohawkGame2D
 
 //ToDo:
 //fix public variables so only those that need to be public are public.. also do the same for the this. ones as i think some arnt needed to be that way
-//if you have enough time try making the turrets not rotate through their own platform group... not gonna do
-
-//things i might change;
-//impliment window.width and height more
+//put game over and game start screens into the platform class area AND make the level number not increase when those are shown

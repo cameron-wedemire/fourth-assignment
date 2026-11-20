@@ -78,7 +78,6 @@ public class Missile
                         if (this.missileSpeed.Length() > 25)
                         {
                             this.missileSpeed = missileMoveAngle * 25;
-                            //Console.WriteLine(missileSpeed.Length());
                         }
                     }
                 }
@@ -106,6 +105,7 @@ public class Missile
         
         else
         {
+            //when not spawned will be offscreen
             this.position.X = -50;
             this.position.Y = -50;
         }
@@ -176,20 +176,4 @@ public class Missile
         }
             
     }
-
 }
-
-
-//toDo:
-//make missiles only spawn when player is within _ range
-//make missiles continue floating but not increasing speed when out of fuel and then explode when they reach -__ fuel
-//make missiles rotate towards player based on rotationToPlayer-180 or something
-
-
-
-//code taken from eye example, will be used for the gun targeting later but for now its here to be used to help make movement stuff
-////find the angle of eye to mouse
-//Vector2 eyeToMouse = Input.GetMousePosition() - position;
-////get the direction to the mouse from the eyes position
-//Vector2 direction = Vector2.Normalize(eyeToMouse);
-//float distance = eyeToMouse.Length(); //or vector2.distance(position, Input.GetMousePosition());

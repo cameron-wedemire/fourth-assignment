@@ -21,7 +21,7 @@ public class backgroundDust
         this.distanceToPlayer = 0;
     }
 
-    public void Update(float speedX , float speedY) //the numbers are the player speed called in from game.cs
+    public void Update(float speedX , float speedY)
     {
         //finds new value when size=0
         if (dustSize > 0)
