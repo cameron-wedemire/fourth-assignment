@@ -14,9 +14,9 @@ public class Missile
     // Variables
     public Vector2 position;
     float fuel;
-    public float distanceToPlayer;
-    public float missileRotation;
-    public Vector2 missileSpeed;
+    float distanceToPlayer;
+    float missileRotation;
+    Vector2 missileSpeed;
     Vector2 RotToPlayerVector;
     float RotToPlayerFloat;
     Vector2 playerLocationFalse = new Vector2(300, 300); //just for calculations that need Vector2s

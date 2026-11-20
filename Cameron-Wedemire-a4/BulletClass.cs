@@ -13,7 +13,7 @@ public class Bullet
     
     // Variables
     public Vector2 position;
-    public float bulletRotation;
+    float bulletRotation;
     public Vector2 bulletSpeed;
     public float bulletLifeTime;
     public bool isPlayerBullet;

@@ -14,7 +14,7 @@ public class Player
 
     // Variables
     public Vector2 playerSpeed;
-    public float playerRotation;
+    float playerRotation;
     public float playerTurretRotation;
     Vector2 RotToCursorVector = new Vector2(0, 0);
     Vector2 playerSpriteType;

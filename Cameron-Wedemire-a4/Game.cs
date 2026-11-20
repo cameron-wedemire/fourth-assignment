@@ -22,8 +22,8 @@ namespace MohawkGame2D
         Platform enemyPlatform = new Platform();
 
         //these give guns and missile launchers a way to know which munition they are to move, each gun turret has 6 bullets and each missile turret has 2 missiles
-        public int bulletSpawnIndex = 0;
-        public int missileSpawnIndex = 0;
+        int bulletSpawnIndex = 0;
+        int missileSpawnIndex = 0;
 
         //gun cooldowns are used to fire after the cooling is done (so player can hold down fire and enemies can fire correctly)
         int playerGunCooldown = 0;
@@ -339,6 +339,3 @@ namespace MohawkGame2D
         }
     }
 }
-
-//ToDo:
-//fix public variables so only those that need to be public are public.. also do the same for the this. ones as i think some arnt needed to be that way
