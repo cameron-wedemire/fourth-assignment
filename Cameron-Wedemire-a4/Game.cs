@@ -50,7 +50,8 @@ namespace MohawkGame2D
             Window.SetTitle("space fight");
             Window.SetSize(600, 600);//change later if needed
 
-            string cwd = System.IO.Directory.GetCurrentDirectory(); //cwd = current working directory
+            //set the current working directory
+            string cwd = System.IO.Directory.GetCurrentDirectory();
             Console.WriteLine($"CWD:{cwd}");
 
             //iterate over array, to setup each bullet
@@ -232,8 +233,12 @@ namespace MohawkGame2D
             //draw the enemy platform which changes based on level
             enemyPlatform.Update(character.playerSpeed.X, character.playerSpeed.Y);
 
+            //calls the weapon cooldown function BUT only when the player is allive as once they are destroyed it makes more sense that they would send in some sort of scrapper
             //if i had multiple platforms at once i would have made this use platform[] in some way
-            platformTurrets();
+            if (character.playerHP > 0)
+            {
+                platformTurrets();
+            }
         }
 
         //advances weapon cooldowns on alive platform turrets
