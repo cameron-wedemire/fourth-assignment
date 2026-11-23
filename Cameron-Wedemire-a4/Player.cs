@@ -124,6 +124,7 @@ public class Player
             Draw.SetLineSize(3);
 
             Draw.Rectangle(0, Window.Height - 50, 100, 50);
+            Text.Color = Color.Black;
             Text.Draw("HP:", 10, Window.Height - 35);
             
             Text.Draw($"{this.playerHP}", 60, Window.Height - 35);
@@ -133,6 +134,15 @@ public class Player
             //draw game over screen if you die
             Text.Color = Color.Red;
             Text.Draw("GAME OVER \n \n \n \n YOU LOSE", 225, 220);
+
+            //draw hp box but saying EJECT
+            Draw.SetFillColor(250, 5, 0);
+            Draw.SetLineColor(50, 100, 0);
+            Draw.SetLineSize(3);
+
+            Text.Color = Color.Black;
+            Draw.Rectangle(0, Window.Height - 50, 100, 50);
+            Text.Draw("EJECT", 9, Window.Height - 37);
         }
     }
     public void CapPlayerSpeed()
